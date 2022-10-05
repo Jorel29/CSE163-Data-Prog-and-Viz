@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>fruit</title>
+        
+        <style type="text/css">
+            div {
+                background-color: lightgray
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+        <p id="grape"></p>
+        <p id="kiwi"></p>
+        <p id="banana"></p>   
+        
+        <script type="text/javascript">
+            var fruits =[
+                {
+                    kind: "grape",
+                    color: "red",
+                    quantity: 12
+                },
+                {
+                    kind: "kiwi",
+                    color: "brown",
+                    quantity: 98
+                },
+                {
+                    kind: "banana",
+                    color: "yellow",
+                    quantity: 0
+                }
+            ]
+            
+            for (let i = 0; i < fruits.length; i++){
+                document.getElementById(fruits[i].kind).style.color = fruits[i].color;
+                document.getElementById(fruits[i].kind).innerHTML = fruits[i].quantity + " " + fruits[i].kind;
+            }
+        </script>
+        </div>
+    </body>
+</html>
