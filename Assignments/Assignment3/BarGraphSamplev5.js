@@ -40,6 +40,12 @@ var yScale = d3.scaleLinear().range([height, 0]);
 var xAxis = d3.axisBottom(xScale);
 
 
+//y axis 
+var yAxis = d3.axisLeft(y)
+                .scale(yScale)
+                .ticks(5, "$") 
+
+
 
 /* --------------------------------------------------------------------
 To understand how to import data. See D3 API refrence on CSV. Understand
