@@ -7,6 +7,8 @@ p{
 }
 
 /*Add .axis path and .axis line commands as described in the book */
+/*Axis we are making the axis path and the line ticks the same color gray both 
+with crisp edges*/
 .axis path,
 .axis line{
     stroke: "gray";
