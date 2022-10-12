@@ -67,7 +67,7 @@ function rowConverter(data) {
 //csv function that takes the csv file and then we run the data through
 //the code that is in brackets after .then(function(data))
 d3.csv("GDP2022TrillionUSDollars.csv", rowConverter).then(function(data){
-    
+
     // Return X and Y SCALES (domain). See Chapter 7:Scales (Scott M.)
     // xScale.domain (x parameter for the area) is the based on the 
     // insertion order of d.key (from data.key)
