@@ -40,10 +40,8 @@ var yScale = d3.scaleLinear().range([height, 0]);
 var xAxis = d3.axisBottom(xScale);
 
 
-//y axis 
-var yAxis = d3.axisLeft(y)
-                .scale(yScale)
-                .ticks(5, "$") 
+//y axis setting the y axis with ticks and format from spec
+var yAxis = d3.axisLeft(yScale).ticks(5).tickFormat( function (d) { return "$" + d});
 
 
 
@@ -109,11 +107,11 @@ d3.csv("GDP2022TrillionUSDollars.csv", rowConverter).then(function(data){
 			   .text(function(d) {
 			   		return d;
 			   })
-			   .attr("x", function(d, i) {
-			   		return i * (w / dataset.length) + 5;
+			   .attr("x", function(d) {
+			   		return d.key
 			   })
 			   .attr("y", function(d) {
-			   		return h - d.value
+			   		return d.value
 			   })
     
     // Draw xAxis and position the label at -60 degrees as shown on the output 
@@ -129,6 +127,8 @@ d3.csv("GDP2022TrillionUSDollars.csv", rowConverter).then(function(data){
         
     
     // Draw yAxis and position the label
-               
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)           
       
 });
