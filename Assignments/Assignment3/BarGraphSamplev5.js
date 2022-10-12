@@ -128,15 +128,24 @@ d3.csv("GDP2022TrillionUSDollars.csv", rowConverter).then(function(data){
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis)
         .selectAll("text")
+        //text attributes using em units
         .attr("dx", "-.8em")
         .attr("dy", ".25em")
+        .attr("transform", "rotate(-60)") //rotate -60 deg
         .style("text-anchor", "end")
         .attr("font-size", "10px");
         
     
-    // Draw yAxis and position the label
+    // Draw yAxis and position the label works
     svg.append("g")
         .attr("class", "y axis")
-        .call(yAxis)           
-      
+        .call(yAxis)
+        .append("text")
+        .text("Trillions of US Dollars ($)")
+        .attr("transform", "rotate(-90)")           
+        .attr("x", -170)
+        .attr("dy", "-3em")
+        .attr("fill", "black")
+        .attr("font-family", "times")
+        .attr("text-anchor", "middle");
 });
