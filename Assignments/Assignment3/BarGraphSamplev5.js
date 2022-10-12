@@ -107,14 +107,19 @@ d3.csv("GDP2022TrillionUSDollars.csv", rowConverter).then(function(data){
                .transition().duration(1000)
                .delay(function (d, i) {return i*200})
 			   .text(function(d) {
-			   		return d;
+			   		return d.value;
 			   })
 			   .attr("x", function(d) {
-			   		return d.key
+			   		return xScale(d.key) + 20;
 			   })
 			   .attr("y", function(d) {
-			   		return d.value
+			   		return yScale(d.value) + 12;
 			   })
+               .attr("font-family", "sans-serif")
+               .attr("font-size", "13px")
+               .attr("font-weight", "bold")
+               .attr("fill", "white")
+               .attr("text-anchor", "middle");
     
     // Draw xAxis and position the label at -60 degrees as shown on the output 
     svg.append("g")
