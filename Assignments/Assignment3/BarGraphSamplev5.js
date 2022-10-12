@@ -47,35 +47,42 @@ the difference between .csv, .tsv and .json files. To import a .tsv or
 // d.key and d.value are very important commands
 // You must provide comments here to demonstrate your understanding of these commands
 
+// Below we are taking the csv row and splitting them into a key and value 
+// because each row contains a country name (or the axis label) and the 
+// number value (label as gdp because of the key value of the first row)
 function rowConverter(data) {
     return {
         key : data.key,
         value : +data.value
     }
 }
-
-d3.csv("GDP2016TrillionUSDollars.csv",rowConverter).then(function(data){
+//csv function that takes the csv file and then we run the data through
+//the code that is in brackets after .then(function(data))
+d3.csv("GDP2022TrillionUSDollars.csv",rowConverter).then(function(data){
     
-    // Return X and Y SCALES (domain). See Chapter 7:Scales (Scott M.) 
+    // Return X and Y SCALES (domain). See Chapter 7:Scales (Scott M.)
+    // xScale.domain (x parameter for the area) is the based on the insertion order of d.key (from data.key)
+    // yScale.domain is the max height of all d.values
     xScale.domain(data.map(function(d){ return d.key; }));
     yScale.domain([0,d3.max(data, function(d) {return d.value; })]);
     
     // Creating rectangular bars to represent the data. 
     // Add comments to explain the code below
-    svg.selectAll("rect")
-        .data(data)
+    svg.selectAll("rect") // find any instance of "rect"
+        .data(data)//allows parses the variable data 
         .enter()
-        .append("rect")
-        .transition().duration(1000)
-        .delay(function(d,i) {return i * 200;})
-        .attr("x", function(d) {
+        .append("rect") //adding rects within and towards the end of
+                        // the "rect" that is selected from selectAll
+        .transition().duration(1000) //transition function with delay of 1000 (ms)
+        .delay(function(d,i) {return i * 200;}) //staggered delay based on i
+        .attr("x", function(d) { //setting the x axis to input data d.key
             return xScale(d.key);
         })
-        .attr("y", function(d) {
+        .attr("y", function(d) { //setting the y axis to input data d.value
             return yScale(d.value);
         })
-        .attr("width", xScale.bandwidth())
-        .attr("height", function(d) {
+        .attr("width", xScale.bandwidth()) //set bar width of each bar based on .bandwidth()
+        .attr("height", function(d) {//set the height of each bar based on d.value
 			 return height- yScale(d.value);
         });
         // create increasing to decreasing shade of blue as shown on the output
