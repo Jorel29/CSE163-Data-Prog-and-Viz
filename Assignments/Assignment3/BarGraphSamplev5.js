@@ -55,13 +55,13 @@ the difference between .csv, .tsv and .json files. To import a .tsv or
 // d.key and d.value are very important commands
 // You must provide comments here to demonstrate your understanding of these commands
 
-// Below we are taking the csv row and splitting them into a key and value 
-// because each row contains a country name (or the axis label) and the 
-// number value (label as gdp because of the key value of the first row)
+// Below we are taking the csv row and splitting them into a country and gdp
+// based on the format of the first row (listed as country,gdp)
+// then relabing them as key and value
 function rowConverter(data) {
     return {
-        key : data.key,
-        value : +data.value
+        key : data.country,
+        value : +data.gdp
     }
 }
 //csv function that takes the csv file and then we run the data through
