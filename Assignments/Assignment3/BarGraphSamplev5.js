@@ -105,16 +105,17 @@ d3.csv("GDP2022TrillionUSDollars.csv", rowConverter).then(function(data){
 			   .enter()
 			   .append("text")
                .transition().duration(1000)
-               .delay(function (d, i) {return i*200})
+               .delay(function (d, i) {return i*200}) //delay
 			   .text(function(d) {
-			   		return d.value;
+			   		return d.value; //set text on each bar as d.value
 			   })
 			   .attr("x", function(d) {
-			   		return xScale(d.key) + 20;
+			   		return xScale(d.key) + 20; //set x axis lables as d.key with space of 20
 			   })
 			   .attr("y", function(d) {
-			   		return yScale(d.value) + 12;
+			   		return yScale(d.value) + 12; //set y axis labels as d.value w/ space 12
 			   })
+               //text style
                .attr("font-family", "sans-serif")
                .attr("font-size", "13px")
                .attr("font-weight", "bold")
