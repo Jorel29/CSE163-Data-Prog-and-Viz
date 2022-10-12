@@ -84,10 +84,10 @@ d3.csv("GDP2022TrillionUSDollars.csv",rowConverter).then(function(data){
         .attr("width", xScale.bandwidth()) //set bar width of each bar based on .bandwidth()
         .attr("height", function(d) {//set the height of each bar based on d.value
 			 return height- yScale(d.value);
-        });
+        })
         // create increasing to decreasing shade of blue as shown on the output
 		.attr("fill", function(d) {
-             return "rgb(0, 0, " + d.value + ")";         
+             return "rgb(0, 0, " + d.value + ")"; // Blue value of RGB is based on d.value         
         });
     
     // Label the data values(d.value)
