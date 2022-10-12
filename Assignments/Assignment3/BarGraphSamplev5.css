@@ -7,7 +7,11 @@ p{
 }
 
 /*Add .axis path and .axis line commands as described in the book */
-
+.axis path,
+.axis line{
+    stroke: "gray";
+    shape-rendering:crispEdges;
+}
 
 .axis text{
     font: Times;
