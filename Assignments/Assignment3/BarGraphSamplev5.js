@@ -104,6 +104,8 @@ d3.csv("GDP2022TrillionUSDollars.csv", rowConverter).then(function(data){
 			   .data(data)
 			   .enter()
 			   .append("text")
+               .transition().duration(1000)
+               .delay(function (d, i) {return i*200})
 			   .text(function(d) {
 			   		return d;
 			   })
