@@ -86,10 +86,12 @@ d3.csv("GDP2022TrillionUSDollars.csv",rowConverter).then(function(data){
 			 return height- yScale(d.value);
         });
         // create increasing to decreasing shade of blue as shown on the output
-			   
+		.attr("fill", function(d) {
+             return "rgb(0, 0, " + d.value + ")";         
+        });
     
     // Label the data values(d.value)
-  
+    
     
     // Draw xAxis and position the label at -60 degrees as shown on the output 
     svg.append("g")
