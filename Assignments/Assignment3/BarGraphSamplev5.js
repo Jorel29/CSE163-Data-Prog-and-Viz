@@ -136,7 +136,7 @@ d3.csv("GDP2022TrillionUSDollars.csv", rowConverter).then(function(data){
         .attr("font-size", "10px");
         
     
-    // Draw yAxis and position the label works
+    // Draw yAxis and position the label works 
     svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
