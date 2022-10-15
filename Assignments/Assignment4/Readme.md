@@ -1,5 +1,9 @@
 # assignment 4
 ## design steps
-1. Refactor the CSV file
-2. Figure out how to do multiline chart
-3. label using the first entries
+- [ ] transpose CSV
+- [ ] store csv data in js
+- [ ] Write data parser in js
+- [ ] figure out how multilinechart works
+- [ ] All necessary steps for multiline chart go here
+    - [ ]
+- [ ] Label the entries
