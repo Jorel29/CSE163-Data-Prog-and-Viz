@@ -1,6 +1,6 @@
 # assignment 4
 ## design steps
-- [ ] transpose CSV
+- [x] transpose CSV
 - [ ] store csv data in js
 - [ ] Write data parser in js
 - [ ] figure out how multilinechart works
