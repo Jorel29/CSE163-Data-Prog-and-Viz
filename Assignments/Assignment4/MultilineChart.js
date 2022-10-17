@@ -39,9 +39,17 @@ var line = d3.line()
 //==================================================================================
 
 function processData(data){
-
+    //from MultiLineV4
+    var countries = data.columns.slice(1).map(function(id) {
+        return {
+          id: id,
+          values: data.map(function(d) {
+            return {year: d.date, energy: d[id]};
+          })
+        };
+      });
 }
 
 d3.csv("BRICSdata.csv", processData).then(function(data){
-    
+
 });
