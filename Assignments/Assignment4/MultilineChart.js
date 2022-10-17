@@ -55,9 +55,9 @@ d3.csv("BRICSdata.csv", type).then(function(data){
         return {
           id: id,
           values: data.map(function(d) {
-            return {year: d.date, energy: d[id]};
+            return {year: d.year, energy: d[id]};
           })
         };
       });
-    //console.log(countries)
+    console.log(countries)
 });
