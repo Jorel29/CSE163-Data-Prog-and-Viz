@@ -37,9 +37,8 @@ var line = d3.line()
     .x(function(d) { return x(d.year); })
     .y(function(d) { return y(d.energy); });
 //==================================================================================
+//modified from MultiLineV4.js
 function type(d, _, columns) {
-    //console.log(columns)
-    //console.log(parseYear(d.date))
     d.year = parseYear(d.year);
     for (var i = 1, n = columns.length, c; i < n; ++i) 
     d[c = columns[i]] = +d[c];
