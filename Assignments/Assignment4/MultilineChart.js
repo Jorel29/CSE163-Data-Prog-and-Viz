@@ -21,3 +21,5 @@ var svg = d3.select("body").append("svg")
 
 //==================================================================================
 
+//parse the year (format full year)
+var parseYear = d3.timeParse("%Y")
