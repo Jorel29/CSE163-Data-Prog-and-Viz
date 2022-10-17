@@ -22,4 +22,8 @@ var svg = d3.select("body").append("svg")
 //==================================================================================
 
 //parse the year (format full year)
-var parseYear = d3.timeParse("%Y")
+var parseYear = d3.timeParse("%Y");
+
+//determine scales
+var x = d3.scaleTime().range([0,width]),
+    y = d3.scaleLinear().range([height, 0]);
