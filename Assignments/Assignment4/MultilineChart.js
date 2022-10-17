@@ -24,6 +24,9 @@ var svg = d3.select("body").append("svg")
 //parse the year (format full year)
 var parseYear = d3.timeParse("%Y");
 
-//determine scales
+//determine scales (from MultiLineV4)
+//computes the scales x and y 
+// z is the color scale using 10 different color categories (d3 API)
 var x = d3.scaleTime().range([0,width]),
-    y = d3.scaleLinear().range([height, 0]);
+    y = d3.scaleLinear().range([height, 0]),
+    z = d3.scaleOrdinal(d3.schemeCategory10);
