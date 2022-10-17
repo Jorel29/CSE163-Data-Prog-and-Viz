@@ -38,11 +38,12 @@ var line = d3.line()
     .y(function(d) { return y(d.energy); });
 //==================================================================================
 function type(d, _, columns) {
-    console.log(columns)
-    d.date = parseYear(d.date);
+    //console.log(columns)
+    //console.log(parseYear(d.date))
+    d.year = parseYear(d.year);
     for (var i = 1, n = columns.length, c; i < n; ++i) 
     d[c = columns[i]] = +d[c];
-    console.log(d.date)
+    console.log(d)
     return d;
   } 
 
