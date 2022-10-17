@@ -37,3 +37,11 @@ var line = d3.line()
     .x(function(d) { return x(d.year); })
     .y(function(d) { return y(d.energy); });
 //==================================================================================
+
+function processData(data){
+
+}
+
+d3.csv("BRICSdata.csv", processData).then(function(data){
+    
+});
