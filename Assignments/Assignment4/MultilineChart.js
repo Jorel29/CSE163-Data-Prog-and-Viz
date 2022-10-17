@@ -51,5 +51,5 @@ function processData(data){
 }
 
 d3.csv("BRICSdata.csv", processData).then(function(data){
-
+    console.log(data)
 });
