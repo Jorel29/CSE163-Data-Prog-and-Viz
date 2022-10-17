@@ -34,6 +34,6 @@ var x = d3.scaleTime().range([0,width]),
 
 var line = d3.line()
     .curve(d3.curveBasis)
-    .x(function(d) { return x(d.date); })
+    .x(function(d) { return x(d.year); })
     .y(function(d) { return y(d.energy); });
 //==================================================================================
