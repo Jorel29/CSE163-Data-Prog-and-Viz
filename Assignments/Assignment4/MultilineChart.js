@@ -21,12 +21,19 @@ var svg = d3.select("body").append("svg")
 
 //==================================================================================
 
-//parse the year (format full year)
+//parse the year (format full year) (from D3 API)
 var parseYear = d3.timeParse("%Y");
 
-//determine scales (from MultiLineV4)
+//Following Block is taken from MultiLine V4
+//==================================================================================
 //computes the scales x and y 
 // z is the color scale using 10 different color categories (d3 API)
 var x = d3.scaleTime().range([0,width]),
     y = d3.scaleLinear().range([height, 0]),
     z = d3.scaleOrdinal(d3.schemeCategory10);
+
+var line = d3.line()
+    .curve(d3.curveBasis)
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.energy); });
+//==================================================================================
