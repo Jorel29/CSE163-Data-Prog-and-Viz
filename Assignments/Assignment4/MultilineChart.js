@@ -37,9 +37,20 @@ var line = d3.line()
     .x(function(d) { return x(d.year); })
     .y(function(d) { return y(d.energy); });
 //==================================================================================
+function type(d, _, columns) {
+    console.log(columns)
+    d.date = parseYear(d.date);
+    for (var i = 1, n = columns.length, c; i < n; ++i) 
+    d[c = columns[i]] = +d[c];
+    console.log(d.date)
+    return d;
+  } 
 
-function processData(data){
-    //from MultiLineV4
+
+d3.csv("BRICSdata.csv", type).then(function(data){
+    //from MultilineChart.js
+    
+    //ignore the year column
     var countries = data.columns.slice(1).map(function(id) {
         return {
           id: id,
@@ -48,8 +59,5 @@ function processData(data){
           })
         };
       });
-}
-
-d3.csv("BRICSdata.csv", processData).then(function(data){
-    console.log(data)
+    //console.log(countries)
 });
