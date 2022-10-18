@@ -60,4 +60,13 @@ d3.csv("BRICSdata.csv", type).then(function(data){
         };
       });
     console.log(countries)
+
+    x.domain(d3.extent(data, function(d) { return d.year; }));
+
+    y.domain([
+        d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.energy; }); }),
+        d3.max(cities, function(c) { return d3.max(c.values, function(d) { return d.energy; }); })
+    ]);
+
+    
 });
