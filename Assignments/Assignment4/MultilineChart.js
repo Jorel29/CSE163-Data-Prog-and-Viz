@@ -5,8 +5,8 @@
 /*
 Code below provided by SureshLodha from BarGraphSamplev5.js
 =====================================================================================*/
-/*var margin = {top: 10, right: 40, bottom: 150, left: 50},//defining the margins
-width = 760 - margin.left - margin.right, //setting width based on margins
+var margin = {top: 20, right: 80, bottom: 30, left: 50},//defining the margins
+width = 960 - margin.left - margin.right, //setting width based on margins
 height = 500 - margin.top - margin.bottom;//setting height based on margins
 
 
@@ -18,14 +18,14 @@ var svg = d3.select("body").append("svg")
     .attr("height", height + margin.top + margin.bottom) // 500H
     .append("g") //add grouped elements to body
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-*/
+
 var svgWidth = 960,
     svgHeight = 500;
 
 var svg = d3.select("svg"),
     margin = {top: 20, right: 80, bottom: 30, left: 50},
-    width = svg.attr("width") - margin.left - margin.right,
-    height = svg.attr("height") - margin.top - margin.bottom,
+    width = svg.attr("width", svgWidth - margin.left - margin.right),
+    height = svg.attr("height", svgHeight - margin.top - margin.bottom),
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 //==================================================================================
 
@@ -47,7 +47,7 @@ var line = d3.line()
 //==================================================================================
 //modified from MultiLineV4.js
 function type(d, _, columns) {
-    d.year = parseYear(d.year);
+    d.year = d.year;
     for (var i = 1, n = columns.length, c; i < n; ++i) 
     d[c = columns[i]] = +d[c];
     console.log(d)
@@ -79,13 +79,13 @@ d3.csv("BRICSdata.csv", type).then(function(data){
     z.domain(countries.map(function(c) { return c.id; }));
   
 
-  g.append("g")
-      .attr("class", "axis axis--x")
+  svg.append("g")
+      .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
-  g.append("g")
-      .attr("class", "axis axis--y")
+  svg.append("g")
+      .attr("class", "y axis")
       .call(d3.axisLeft(y))
     .append("text")
       .attr("transform", "rotate(-90)")
