@@ -31,12 +31,6 @@ var x = d3.scaleTime().range([0,width]),
     y = d3.scaleLinear().range([height, 0]),
     z = d3.scaleOrdinal(d3.schemeCategory10);
 
-var valueline = d3.line()
-  .x(function(d) { return x(d.year); })
-  .y(function(d) { return y(d.energy); });
-
-
-
 var line = d3.line()
     .curve(d3.curveBasis)
     .x(function(d) { return x(d.year); })
@@ -46,8 +40,7 @@ var line = d3.line()
 function type(d, _, columns) {
     d.year = parseYear(d.year);
     for (var i = 1, n = columns.length, c; i < n; ++i) 
-    d[c = columns[i]] = +d[c];
-    console.log(d);
+      d[c = columns[i]] = +d[c];
     return d;
   } 
 
@@ -78,6 +71,10 @@ d3.csv("BRICSdata.csv", type).then(function(data){
     });
   console.log(countries);
   console.log(data);
+  console.log(d3.extent(data, function(d) { return d.year; }));
+  console.log(d3.min(countries, function(c) { return d3.min(c.values, function(d) { return d.energy; }); }));
+  console.log(d3.max(countries, function(c) { return d3.max(c.values, function(d) { return d.energy; }); }))
+  
   x.domain(d3.extent(data, function(d) { return d.year; }));
 
   y.domain([
@@ -103,11 +100,13 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .tickSize(-width)
       .tickFormat("")
     )
+  //x axis
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
+  //y axis
   svg.append("g")
       .attr("class", "y axis")
       .call(d3.axisLeft(y))
@@ -122,12 +121,15 @@ d3.csv("BRICSdata.csv", type).then(function(data){
     .data(countries)
     .enter().append("g")
       .attr("class", "country");
-  
+
   country.append("path")
       .attr("class", "line")
       .attr("d", function(d) { return line(d.values); })
-      .style("stroke", function(d) { return z(d.id); });
+      .style("stroke", function(d) { return z(d.id); })
+      .transition()
+      
 
+  
   country.append("text")
       .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
       .attr("transform", function(d) { return "translate(" + x(d.value.year) + "," + y(d.value.energy) + ")"; })
