@@ -140,14 +140,15 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .attr("dy", "0.35em")
       .style("font", "10px sans-serif")
       .text(function(d) { return d.id; });
-
+  //From MarkMacKays D3 Animate Path, 
   var totalLength = path.node().getTotalLength();
-
+  console.log(totalLength);
+  //modified to fix some weird behaviour
   path
-      .attr("stroke-dasharray", totalLength + " " + totalLength)
+      .attr("stroke-dasharray", (totalLength+275) + " " + totalLength)
       .attr("stroke-dashoffset", totalLength)
       .transition()
         .duration(5000)
         .ease(d3.easeLinear)
-        .attr("stroke-dashoffset", 0);
+        .attr("stroke-dashoffset", 0)
 });
