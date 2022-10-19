@@ -1,3 +1,4 @@
+/*code from provided sample stylesheet.css*/
 body { 
     font: 14px Arial;
   }
@@ -20,11 +21,13 @@ body {
       font: Times;
       font-size: 12px;
   }
+  /*.grid line is from d3noob*/
   .grid line {
     stroke: lightgrey;
     stroke-opacity: 0.7;
     shape-rendering: crispEdges;
   }
+  /*rest is from stylesheet.css*/
   .grid .tick {
       stroke: lightgrey;
       stroke-opacity: 0.7;
