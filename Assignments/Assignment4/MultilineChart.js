@@ -35,7 +35,7 @@ var line = d3.line()
     .curve(d3.curveBasis)
     .x(function(d) { return x(d.year); })
     .y(function(d) { return y(d.energy); });
-//==================================================================================
+
 //modified from MultiLineV4.js
 function type(d, _, columns) {
     d.year = parseYear(d.year);
@@ -43,7 +43,8 @@ function type(d, _, columns) {
       d[c = columns[i]] = +d[c];
     return d;
   } 
-
+//==================================================================================
+//linechart.js
 // gridlines in x axis function
 function make_x_gridlines() {		
   return d3.axisBottom(x)
@@ -84,6 +85,7 @@ d3.csv("BRICSdata.csv", type).then(function(data){
 
   z.domain(countries.map(function(c) { return c.id; }));
   
+  //linechart.js
   // add the X gridlines
   svg.append("g")			
   .attr("class", "grid")
@@ -100,6 +102,8 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .tickSize(-width)
       .tickFormat("")
     )
+
+//MultiLineV4
   //x axis
   svg.append("g")
       .attr("class", "x axis")
@@ -115,26 +119,35 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .attr("y", 6)
       .attr("dy", "0.71em")
       .attr("fill", "#000")
-      .text("Energy Per Capita, $(Millions)");
+      .text("Energy Per Capita, (Millions)");
 
   var country = svg.selectAll(".country")
     .data(countries)
     .enter().append("g")
       .attr("class", "country");
 
-  country.append("path")
+  var path = country.append("path")
       .attr("class", "line")
       .attr("d", function(d) { return line(d.values); })
       .style("stroke", function(d) { return z(d.id); })
-      .transition()
-      
 
   
+  
   country.append("text")
-      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
+      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 6]}; })
       .attr("transform", function(d) { return "translate(" + x(d.value.year) + "," + y(d.value.energy) + ")"; })
       .attr("x", 3)
       .attr("dy", "0.35em")
       .style("font", "10px sans-serif")
       .text(function(d) { return d.id; });
+
+  var totalLength = path.node().getTotalLength();
+
+  path
+      .attr("stroke-dasharray", totalLength + " " + totalLength)
+      .attr("stroke-dashoffset", totalLength)
+      .transition()
+        .duration(5000)
+        .ease(d3.easeLinear)
+        .attr("stroke-dashoffset", 0);
 });
