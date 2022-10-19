@@ -64,6 +64,7 @@ d3.csv("BRICSdata.csv", type).then(function(data){
   //code below modified from MultiLineV4
   //===================================================================================
   //ignore the year column
+  //copy the countries and energy coloumns using map with the format under the return
   var countries = data.columns.slice(1).map(function(id) {
       return {
         id: id,
