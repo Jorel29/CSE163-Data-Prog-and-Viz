@@ -130,7 +130,7 @@ d3.csv("BRICSdata.csv", type).then(function(data){
     .data(countries)
     .enter().append("g")
       .attr("class", "country");
-
+  //var for path to be referenced in the animate path code
   var path = country.append("path")
       .attr("class", "line")
       .attr("d", function(d) { return line(d.values); })
@@ -146,10 +146,11 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .style("font", "10px sans-serif")
       .text(function(d) { return d.id; });
   //=================================================================================
-  //From MarkMacKays D3 Animate Path, 
+  //From MarkMacKays D3 Animate Path
+  //================================================================================
   var totalLength = path.node().getTotalLength();
   console.log(totalLength);
-  //modified to fix some weird behaviour
+  //modified to fix some weird behaviour with lines
   path
       .attr("stroke-dasharray", (totalLength+275) + " " + totalLength)
       .attr("stroke-dashoffset", totalLength)
