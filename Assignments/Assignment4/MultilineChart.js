@@ -5,7 +5,7 @@
 /*
 Code below provided by SureshLodha from BarGraphSamplev5.js
 =====================================================================================*/
-var margin = {top: 20, right: 80, bottom: 30, left: 50},//defining the margins
+/*var margin = {top: 20, right: 80, bottom: 30, left: 50},//defining the margins
 width = 960 - margin.left - margin.right, //setting width based on margins
 height = 500 - margin.top - margin.bottom;//setting height based on margins
 
@@ -17,7 +17,7 @@ var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right) // 760 W
     .attr("height", height + margin.top + margin.bottom) // 500H
     .append("g") //add grouped elements to body
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");*/
 
 var svgWidth = 960,
     svgHeight = 500;
@@ -97,10 +97,7 @@ d3.csv("BRICSdata.csv", type).then(function(data){
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(gridXaxis()
-        .tickSize(-width, 0, 0)
-        .tickFormat("")
-      );
+      .call(d3.axisBottom(x));
 
   svg.append("g")
       .attr("class", "y axis")
