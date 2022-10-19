@@ -152,10 +152,10 @@ d3.csv("BRICSdata.csv", type).then(function(data){
   console.log(totalLength);
   //modified to fix some weird behaviour with lines
   path
-      .attr("stroke-dasharray", (totalLength+275) + " " + totalLength)
+      .attr("stroke-dasharray", totalLength+275 + " " + totalLength)
       .attr("stroke-dashoffset", totalLength)
       .transition()
         .duration(5000)
-        .ease(d3.easeLinear)
+        .ease(d3.easeLinear) //from Danny's Animate a Path in d3
         .attr("stroke-dashoffset", 0)
 });
