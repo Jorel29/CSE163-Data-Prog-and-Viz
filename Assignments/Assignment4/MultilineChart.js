@@ -44,7 +44,8 @@ function type(d, _, columns) {
     return d;
   } 
 //==================================================================================
-//linechart.js
+// below code is from Simple Graph with Gridlines v4
+//==================================================================================
 // gridlines in x axis function
 function make_x_gridlines() {		
   return d3.axisBottom(x)
@@ -84,8 +85,9 @@ d3.csv("BRICSdata.csv", type).then(function(data){
   ]);
 
   z.domain(countries.map(function(c) { return c.id; }));
-  
-  //linechart.js
+  //============================================================================
+  //below code is from Simple Graph with Gridlines v4
+  //============================================================================
   // add the X gridlines
   svg.append("g")			
   .attr("class", "grid")
@@ -102,8 +104,8 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .tickSize(-width)
       .tickFormat("")
     )
-
-//from MultiLineV4
+//=============================================================================
+//the code below is originally MultiLineV4, modified for this source
 //=============================================================================
   //x axis
   svg.append("g")
