@@ -30,17 +30,17 @@ var parseYear = d3.timeParse("%Y");
 var x = d3.scaleTime().range([0,width]),
     y = d3.scaleLinear().range([height, 0]),
     z = d3.scaleOrdinal(d3.schemeCategory10);
-
+//setting the line parameters
 var line = d3.line()
-    .curve(d3.curveBasis)
-    .x(function(d) { return x(d.year); })
-    .y(function(d) { return y(d.energy); });
+    .curve(d3.curveBasis) //curves the line
+    .x(function(d) { return x(d.year); })//sets the x axis of the line to year
+    .y(function(d) { return y(d.energy); });//sets the y axis of the line to energy
 
 //modified from MultiLineV4.js
 function type(d, _, columns) {
-    d.year = parseYear(d.year);
+    d.year = parseYear(d.year); //correct the year using parseYear
     for (var i = 1, n = columns.length, c; i < n; ++i) 
-      d[c = columns[i]] = +d[c];
+      d[c = columns[i]] = +d[c];//stores the data in per column format (associating the energy per column)
     return d;
   } 
 //==================================================================================
@@ -58,10 +58,11 @@ function make_y_gridlines() {
       .ticks(5)
 }
 
-
+//set input data passing the csv to type function
 d3.csv("BRICSdata.csv", type).then(function(data){
-    //from MultilineChart.js
-    
+  //===================================================================================
+  //code below modified from MultiLineV4
+  //===================================================================================
   //ignore the year column
   var countries = data.columns.slice(1).map(function(id) {
       return {
@@ -73,9 +74,9 @@ d3.csv("BRICSdata.csv", type).then(function(data){
     });
   console.log(countries);
   console.log(data);
-  console.log(d3.extent(data, function(d) { return d.year; }));
-  console.log(d3.min(countries, function(c) { return d3.min(c.values, function(d) { return d.energy; }); }));
-  console.log(d3.max(countries, function(c) { return d3.max(c.values, function(d) { return d.energy; }); }))
+  console.log(d3.extent(data, function(d) { return d.year; })); //get the x domain (min and max years)
+  console.log(d3.min(countries, function(c) { return d3.min(c.values, function(d) { return d.energy; }); })); // get the y min domain
+  console.log(d3.max(countries, function(c) { return d3.max(c.values, function(d) { return d.energy; }); })); // get the y max domain
   
   x.domain(d3.extent(data, function(d) { return d.year; }));
 
@@ -84,7 +85,7 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       d3.max(countries, function(c) { return d3.max(c.values, function(d) { return d.energy; }); })
   ]);
 
-  z.domain(countries.map(function(c) { return c.id; }));
+  z.domain(countries.map(function(c) { return c.id; })); // set the color id based on the map of c.id
   //============================================================================
   //below code is from Simple Graph with Gridlines v4
   //============================================================================
