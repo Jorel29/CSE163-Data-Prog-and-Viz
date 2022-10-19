@@ -53,6 +53,21 @@ function type(d, _, columns) {
     console.log(d)
     return d;
   } 
+// x grid lines
+function gridXaxis() {
+    return d3.svg.axis()
+        .scale(x)
+        .orient("bottom")
+        .ticks(5)
+}
+
+// y grid lines
+function gridYaxis() {
+  return d3.svg.axis()
+      .scale(y)
+      .orient("left")
+      .ticks(5)
+}
 
 
 d3.csv("BRICSdata.csv", type).then(function(data){
@@ -82,7 +97,10 @@ d3.csv("BRICSdata.csv", type).then(function(data){
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+      .call(gridXaxis()
+        .tickSize(-width, 0, 0)
+        .tickFormat("")
+      );
 
   svg.append("g")
       .attr("class", "y axis")
