@@ -29,7 +29,7 @@ var parseYear = d3.timeParse("%Y");
 // z is the color scale using 10 different color categories (d3 API)
 var x = d3.scaleTime().range([0,width]),
     y = d3.scaleLinear().range([height, 0]),
-    z = d3.scaleOrdinal(d3.schemeCategory10);
+    z = d3.scaleOrdinal(d3.schemeSet3);//12 categorical colors (not enough!)
 //setting the line parameters
 var line = d3.line()
     .curve(d3.curveBasis) //curves the line
