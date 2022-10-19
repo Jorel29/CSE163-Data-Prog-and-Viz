@@ -103,7 +103,8 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .tickFormat("")
     )
 
-//MultiLineV4
+//from MultiLineV4
+//=============================================================================
   //x axis
   svg.append("g")
       .attr("class", "x axis")
@@ -121,6 +122,7 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .attr("fill", "#000")
       .text("Energy Per Capita, (Millions)");
 
+  //create a var to easily append path and text according to the data
   var country = svg.selectAll(".country")
     .data(countries)
     .enter().append("g")
@@ -140,6 +142,7 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .attr("dy", "0.35em")
       .style("font", "10px sans-serif")
       .text(function(d) { return d.id; });
+  //=================================================================================
   //From MarkMacKays D3 Animate Path, 
   var totalLength = path.node().getTotalLength();
   console.log(totalLength);
