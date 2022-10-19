@@ -29,7 +29,7 @@ var parseYear = d3.timeParse("%Y");
 // z is the color scale using 10 different color categories (d3 API)
 var x = d3.scaleTime().range([0,width]),
     y = d3.scaleLinear().range([height, 0]),
-    z = d3.scaleOrdinal(d3.schemeSet3);//12 categorical colors (not enough! from d3 api)
+    z = d3.scaleOrdinal(d3.schemeCategory10);//12 categorical colors (not enough! from d3 api)
 //setting the line parameters
 var line = d3.line()
     .curve(d3.curveBasis) //curves the line
@@ -139,9 +139,9 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .style("stroke", function(d) { return z(d.id); })
 
   
-  //changed the offeset to 2015 as last year because most countries fall to zero after 2015
+  //puts the text as the end of each respective line
   country.append("text")
-      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 6]}; })
+      .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
       .attr("transform", function(d) { return "translate(" + x(d.value.year) + "," + y(d.value.energy) + ")"; })
       .attr("x", 3)
       .attr("dy", "0.35em")
@@ -154,7 +154,7 @@ d3.csv("BRICSdata.csv", type).then(function(data){
   console.log(totalLength);
   //modified to fix some weird behaviour with lines
   path
-      .attr("stroke-dasharray", totalLength+275 + " " + totalLength)
+      .attr("stroke-dasharray", totalLength + " " + totalLength) //create a dash with 
       .attr("stroke-dashoffset", totalLength)
       .transition()
         .duration(5000)
