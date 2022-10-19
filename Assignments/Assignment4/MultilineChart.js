@@ -132,7 +132,7 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .style("stroke", function(d) { return z(d.id); })
 
   
-  
+  //changed the offeset to 2015 as last year because most countries fall to zero after 2015
   country.append("text")
       .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 6]}; })
       .attr("transform", function(d) { return "translate(" + x(d.value.year) + "," + y(d.value.energy) + ")"; })
