@@ -5,10 +5,10 @@
 /*
 Code below provided by SureshLodha from BarGraphSamplev5.js
 =====================================================================================*/
-/*var margin = {top: 20, right: 80, bottom: 30, left: 50},//defining the margins
-width = 960 - margin.left - margin.right, //setting width based on margins
-height = 500 - margin.top - margin.bottom;//setting height based on margins
-
+var margin = {top: 10, right: 40, bottom: 150, left: 50},//defining the margins
+    width = 760 - margin.left - margin.right, //setting width based on margins
+    height = 500 - margin.top - margin.bottom;//setting height based on margins
+    
 
 // Define SVG. "g" means group SVG elements together. 
 // Add comments here in your own words to explain this segment of code
@@ -17,16 +17,7 @@ var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right) // 760 W
     .attr("height", height + margin.top + margin.bottom) // 500H
     .append("g") //add grouped elements to body
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");*/
-
-var svgWidth = 960,
-    svgHeight = 500;
-
-var svg = d3.select("svg"),
-    margin = {top: 20, right: 80, bottom: 30, left: 50},
-    width = svg.attr("width", svgWidth - margin.left - margin.right),
-    height = svg.attr("height", svgHeight - margin.top - margin.bottom),
-    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 //==================================================================================
 
 //parse the year (format full year) (from D3 API)
@@ -40,6 +31,12 @@ var x = d3.scaleTime().range([0,width]),
     y = d3.scaleLinear().range([height, 0]),
     z = d3.scaleOrdinal(d3.schemeCategory10);
 
+var valueline = d3.line()
+  .x(function(d) { return x(d.year); })
+  .y(function(d) { return y(d.energy); });
+
+
+
 var line = d3.line()
     .curve(d3.curveBasis)
     .x(function(d) { return x(d.year); })
@@ -47,25 +44,22 @@ var line = d3.line()
 //==================================================================================
 //modified from MultiLineV4.js
 function type(d, _, columns) {
-    d.year = d.year;
+    d.year = parseYear(d.year);
     for (var i = 1, n = columns.length, c; i < n; ++i) 
     d[c = columns[i]] = +d[c];
-    console.log(d)
+    console.log(d);
     return d;
   } 
-// x grid lines
-function gridXaxis() {
-    return d3.svg.axis()
-        .scale(x)
-        .orient("bottom")
-        .ticks(5)
+
+// gridlines in x axis function
+function make_x_gridlines() {		
+  return d3.axisBottom(x)
+      .ticks(5)
 }
 
-// y grid lines
-function gridYaxis() {
-  return d3.svg.axis()
-      .scale(y)
-      .orient("left")
+// gridlines in y axis function
+function make_y_gridlines() {		
+  return d3.axisLeft(y)
       .ticks(5)
 }
 
@@ -73,27 +67,42 @@ function gridYaxis() {
 d3.csv("BRICSdata.csv", type).then(function(data){
     //from MultilineChart.js
     
-    //ignore the year column
-    var countries = data.columns.slice(1).map(function(id) {
-        return {
-          id: id,
-          values: data.map(function(d) {
-            return {year: d.year, energy: d[id]};
-          })
-        };
-      });
-    console.log(countries)
+  //ignore the year column
+  var countries = data.columns.slice(1).map(function(id) {
+      return {
+        id: id,
+        values: data.map(function(d) {
+          return {year: d.year, energy: d[id]};
+        })
+      };
+    });
+  console.log(countries);
+  console.log(data);
+  x.domain(d3.extent(data, function(d) { return d.year; }));
 
-    x.domain(d3.extent(data, function(d) { return d.year; }));
+  y.domain([
+      d3.min(countries, function(c) { return d3.min(c.values, function(d) { return d.energy; }); }),
+      d3.max(countries, function(c) { return d3.max(c.values, function(d) { return d.energy; }); })
+  ]);
 
-    y.domain([
-        d3.min(countries, function(c) { return d3.min(c.values, function(d) { return d.energy; }); }),
-        d3.max(countries, function(c) { return d3.max(c.values, function(d) { return d.energy; }); })
-    ]);
-
-    z.domain(countries.map(function(c) { return c.id; }));
+  z.domain(countries.map(function(c) { return c.id; }));
   
+  // add the X gridlines
+  svg.append("g")			
+  .attr("class", "grid")
+  .attr("transform", "translate(0," + height + ")")
+  .call(make_x_gridlines()
+      .tickSize(-height)
+      .tickFormat("")
+  )
 
+// add the Y gridlines
+  svg.append("g")			
+    .attr("class", "grid")
+    .call(make_y_gridlines()
+      .tickSize(-width)
+      .tickFormat("")
+    )
   svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
@@ -109,7 +118,7 @@ d3.csv("BRICSdata.csv", type).then(function(data){
       .attr("fill", "#000")
       .text("Energy Per Capita, $(Millions)");
 
-  var country = g.selectAll(".country")
+  var country = svg.selectAll(".country")
     .data(countries)
     .enter().append("g")
       .attr("class", "country");
