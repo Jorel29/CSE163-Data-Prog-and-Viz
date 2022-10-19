@@ -72,8 +72,8 @@ d3.csv("BRICSdata.csv", type).then(function(data){
         })
       };
     });
-  console.log(countries); //excludes year
-  console.log(data);//includes year
+  console.log(countries); //excludes year has countries
+  console.log(data);//includes year without countries
   console.log(countries.length); // number of countries
   console.log(d3.extent(data, function(d) { return d.year; })); //get the x domain (min and max years)
   console.log(d3.min(countries, function(c) { return d3.min(c.values, function(d) { return d.energy; }); })); // get the y min domain
