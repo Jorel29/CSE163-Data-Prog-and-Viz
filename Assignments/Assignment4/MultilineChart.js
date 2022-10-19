@@ -5,7 +5,7 @@
 /*
 Code below provided by SureshLodha from BarGraphSamplev5.js
 =====================================================================================*/
-var margin = {top: 10, right: 40, bottom: 150, left: 50},//defining the margins
+var margin = {top: 10, right: 75, bottom: 150, left: 50},//defining the margins
     width = 760 - margin.left - margin.right, //setting width based on margins
     height = 500 - margin.top - margin.bottom;//setting height based on margins
     
@@ -143,7 +143,8 @@ d3.csv("BRICSdata.csv", type).then(function(data){
   country.append("text")
       .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
       .attr("transform", function(d) { return "translate(" + x(d.value.year) + "," + y(d.value.energy) + ")"; })
-      .attr("x", 3)
+      .attr("x", 2)
+      .attr("text-anchor", "start")
       .attr("dy", "0.35em")
       .style("font", "10px sans-serif")
       .text(function(d) { return d.id; });
