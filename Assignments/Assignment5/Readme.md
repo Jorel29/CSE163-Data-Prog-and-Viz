@@ -8,6 +8,7 @@
     - [ ] insert a 'var tooltip'
     - [ ] insert .on("mouseover") command to activate tooltip with transition, placement, background
         - [ ] deactivate with .on("mouseout") command
+        - [ ] labels dissappear when you move away from dots
 - [ ] Add Pan + Zoom + Drag
 - [ ] Add Legend
 
