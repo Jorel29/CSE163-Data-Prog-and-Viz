@@ -17,7 +17,12 @@
         - [ ] move your finger away(Scroll up) on a circle to zoom in
         - [ ] move finger in (Scroll down) on a mouse to zoom out
         - [ ] both x and y axis are scaled automatically
+    - [ ] Country Name or Tooltip
+        - [ ] appears next to country
+        - [ ] moves automatically with pan-drag-zoom funciton
+    - [ ] make comments at the top of .js file stating the actions required to support the 3 functionalities
 - [ ] Add Legend
+    - [ ] add 3 circles corresponding to the three different sizes of the "total gdp" as shown in example 
 
 # Extra
 - [ ] D3 V6 or V7
