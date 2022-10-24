@@ -10,6 +10,13 @@
         - [ ] deactivate with .on("mouseout") command
         - [ ] labels dissappear when you move away from dots
 - [ ] Add Pan + Zoom + Drag
+    - [ ] Pan+Drag
+        - [ ] Hold cursor on circle to pan-drag
+        - [ ] Both x-axis and y-axis are scaled automatically
+    - [ ] Zoom
+        - [ ] move your finger away(Scroll up) on a circle to zoom in
+        - [ ] move finger in (Scroll down) on a mouse to zoom out
+        - [ ] both x and y axis are scaled automatically
 - [ ] Add Legend
 
 # Extra
