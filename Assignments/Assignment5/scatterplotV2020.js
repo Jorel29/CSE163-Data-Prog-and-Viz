@@ -134,6 +134,7 @@
         .data(scatterdataset)
         .enter().append("circle")
         .attr("class", "dot")
+        //need to redefine r
         .attr("r", "1")
         .attr("cx", function(d) {return xScale(d.gdp);})
         .attr("cy", function(d) {return yScale(d.epc);})
