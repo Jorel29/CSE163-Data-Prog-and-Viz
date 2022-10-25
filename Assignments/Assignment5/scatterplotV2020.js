@@ -98,7 +98,7 @@
         height = 500 - margin.top - margin.bottom;
 
     //Define Color
-    var colors = d3.scale.category20();
+    var colors = d3.schemeCategory10;
 
     //Define SVG
       var svg = d3.select("body")
@@ -109,7 +109,7 @@
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     //Define Scales   
-    var xScale = d3.scale.linear()
+    var xScale = d3.scaleLinear()
         .domain([0,16]) //Need to redefine this later after loading the data
         .range([0, width]);
 
