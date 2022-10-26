@@ -1,4 +1,4 @@
-   /* var scatterdataset = [ {
+    var scatterdataset = [ {
         "name": "United States",
         "country": "United States",
         "gdp": 14.9,
@@ -90,7 +90,7 @@
         "gdp": 1.01,
         "epc": 222,
         "total": 10.7
-    }];*/
+    }];
 
     //Define Margin
     var margin = {left: 80, right: 80, top: 50, bottom: 50 }, 
@@ -110,11 +110,11 @@
 
     //Define Scales   
     var xScale = d3.scaleLinear()
-        .domain([0,16]) //Need to redefine this later after loading the data
+         //Need to redefine this later after loading the data
         .range([0, width]);
 
     var yScale = d3.scaleLinear()
-        .domain([0,450]) //Need to redfine this later after loading the data
+         //Need to redfine this later after loading the data
         .range([height, 0]);
     
     //Define Tooltip here
@@ -128,22 +128,26 @@
     function parse(d, columns) {
         return{
           country: d.country,
-          gdp: d.gdp,
-          population: d.population,
-          ecc: d.ecc,
-          ec: d.ec
+          gdp: +d.gdp,
+          population: +d.population,
+          ecc: +d.ecc,
+          ec: +d.ec
         }
-        //for (var i = 1, n = columns.length, c; i < n; ++i) 
-        //  d[c = columns[i]] = +d[c];//stores the data in per column format (associating the energy per column)
-        //console.log(d);
-        //return d;
       }
 d3.csv("scatterdata.csv", parse).then(function(data){
     console.log(data);
     //console.log(countries);
     // Define domain for xScale and yScale
-    
-    
+    console.log(d3.min(data, function(d) { return d.gdp; }));
+
+    xScale.domain([0,16]);
+
+    yScale.domain([
+      0,
+      450
+    ]);
+
+    //z.domain(countries.map(function(c) { return c.id; }));
    
     //Draw Scatterplot
         svg.selectAll(".dot")
