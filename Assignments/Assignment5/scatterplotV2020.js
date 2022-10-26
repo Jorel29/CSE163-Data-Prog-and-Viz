@@ -128,6 +128,7 @@
     function parse(d, columns) {
         for (var i = 1, n = columns.length, c; i < n; ++i) 
           d[c = columns[i]] = +d[c];//stores the data in per column format (associating the energy per column)
+        console.log(d);
         return d;
       }
 d3.csv("scatterdata.csv", parse).then(function(data){
