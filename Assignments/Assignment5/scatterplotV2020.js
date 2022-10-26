@@ -118,7 +118,28 @@
         .range([height, 0]);
     
     //Define Tooltip here
+    var tooltip = d3.select("#div_template")
+                .append("div")
+                .attr("class", "tooltip")
     
+    var mouseover = function(d) {
+        tooltip
+            .style("opacity", 0.8)
+        d3.select(this)
+            .style("opacity", 0.8)
+        }
+    var mousemove = function(event, d) {
+    tooltip
+        .html("The exact value of this cell is: " + d.gdp)
+        .style("left", (d3.pointer(event)+70) + "px")
+        .style("top", (d3.pointer(event)) + "px")
+    }
+    var mouseout = function(d) {
+    tooltip
+        .style("opacity", 0)
+    d3.select(this)
+        .style("opacity", 1)
+    }
       
        //Define Axis
     var xAxis = d3.axisBottom(xScale)
@@ -155,28 +176,7 @@ d3.csv("scatterdata.csv", parse).then(function(data){
     ]);
 
     //z.domain(countries.map(function(c) { return c.id; }));
-    var tooltip = d3.select("#div_template")
-                .append("div")
-                .attr("class", "tooltip")
     
-    var mouseover = function(d) {
-        tooltip
-            .style("opacity", 0.8)
-        d3.select(this)
-            .style("opacity", 0.8)
-        }
-    var mousemove = function(event, d) {
-    tooltip
-        .html("The exact value of this cell is: " + d.gdp)
-        .style("left", (d3.pointer(event)+70) + "px")
-        .style("top", (d3.pointer(event)) + "px")
-    }
-    var mouseout = function(d) {
-    tooltip
-        .style("opacity", 0)
-    d3.select(this)
-        .style("opacity", 1)
-    }
     //Draw Scatterplot
     svg.selectAll(".dot")
         .data(data)
