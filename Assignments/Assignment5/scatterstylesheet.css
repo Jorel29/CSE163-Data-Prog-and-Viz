@@ -15,4 +15,8 @@ body {
 
 .tooltip{
   stroke: #000;
+  background-color: white;
+  border: transparent;
+  border-radius: 5px;
+  padding: 3px;
 }
