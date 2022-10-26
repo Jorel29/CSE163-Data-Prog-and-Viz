@@ -159,7 +159,6 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         .attr("cy", function(d) {return yScale(d.ecc);})
         .style("fill", function (d) { return colors(d.country); })
         .on("mouseover", mouseover)
-        .on("mousemove", mousemove)
         .on("mouseout", mouseout);
     //Add .on("mouseover", .....
     //Add Tooltip.html with transition and style
@@ -192,12 +191,12 @@ d3.csv("scatterdata.csv", parse).then(function(data){
                       .style("stroke", "black")
                       .style("opacity", 0.8)
                   }
-                  var mousemove = function(event, d) {
+                  /*var mousemove = function(event, d) {
                     tooltip
                       .html("The exact value of this cell is: " + d.gdp)
                       .style("left", (d3.pointer(event)+d.gdp) + "px")
                       .style("top", d3.pointer(event)+d.ecc + "px")
-                  }
+                  }*/
                   var mouseout = function(d) {
                     tooltip
                       .style("opacity", 0)
