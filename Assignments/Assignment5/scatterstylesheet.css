@@ -1,8 +1,26 @@
 body {
   font: 13px sans-serif;
 }
+.title{
+  text-align: center;
+}
+.item{
+  display: flex;
+  justify-content: space-between;
+  width: auto;
+  height: 1em;
+}
 .left{
-  float:left;
+  width: 33.333%;
+  text-align: left;
+}
+.center{
+  width:33.333%;
+  text-align: center;
+}
+.right{
+  width: 33.333%;
+  text-align: right;
 }
 
 .axis path,
