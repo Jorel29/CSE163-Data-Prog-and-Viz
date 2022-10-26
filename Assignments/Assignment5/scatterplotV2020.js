@@ -148,8 +148,9 @@ d3.csv("scatterdata.csv", parse).then(function(data){
     ]);
 
     //z.domain(countries.map(function(c) { return c.id; }));
-    var tooltip = d3.select(".tooltip")
+    var tooltip = d3.select("#div_template")
                 .append("div")
+                .attr("class", "tooltip")
     
     var mouseover = function(d) {
         tooltip
@@ -160,6 +161,8 @@ d3.csv("scatterdata.csv", parse).then(function(data){
     var mousemove = function(event, d) {
     tooltip
         .html("The exact value of this cell is: " + d.gdp)
+        .style("left", (d3.pointer(event)+70) + "px")
+        .style("top", (d3.pointer(event)) + "px")
     }
     var mouseout = function(d) {
     tooltip
@@ -197,22 +200,6 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         .attr("y", function(d) {return yScale(d.ecc);})
         .style("fill", "black")
         .text(function (d) {return d.country; });
-
-    
-    svg.selectAll()
-        .data(data)
-        .enter()
-        .append("rect")
-        .attr("x", function(d) { return xScale(d.gdp) })
-        .attr("y", function(d) { return yScale(d.ecc) })
-        .attr("rx", 4)
-        .attr("ry", 4)
-        .attr("width", 0 )
-        .attr("height", 0 )
-        .style("fill", function(d) { return colors(d.country)} )
-        .style("stroke-width", 1)
-        .style("stroke", "none")
-        .style("opacity", 0)
 
  //x-axis
     svg.append("g")
