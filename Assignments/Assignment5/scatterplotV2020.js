@@ -232,22 +232,23 @@ d3.csv("scatterdata.csv", parse).then(function(data){
             .attr("y", 50)
             .attr("x", width/2)
             .style("text-anchor", "middle")
+            .attr("fill", "black")
             .attr("font-size", "12px")
             .text("GDP (in Trillion US Dollars) in 2010");
 
-    
     //Y-axis
     var gY = svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
         .append("text")
-        .attr("class", "label")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -50)
-        .attr("x", -50)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .attr("font-size", "12px")
-        .text("Energy Consumption per Capita (in Million BTUs per person)");
+            .attr("class", "label")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -50)
+            .attr("x", -50)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .attr("fill", "black")
+            .attr("font-size", "12px")
+            .text("Energy Consumption per Capita (in Million BTUs per person)");
     
 });
