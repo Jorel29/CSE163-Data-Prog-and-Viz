@@ -122,16 +122,8 @@
         .append("div")
         .style("opacity", 0)
         .attr("class", "tooltip")
-        .style("background-color", "steelblue")
-        .style("border", "solid")
-        .style("border-width", "2px")
-        .style("border-radius", "5px")
-        .style("padding", "5px")
-        .style("top", "0px")
-        .style("left", "0px")
     
     var mouseover = function(event, d) {
-        console.log(tooltip.style.top);
         tooltip
             .style("opacity", 0.8)
             .style("left", d3.pointer(event)[0] + "px")
@@ -146,7 +138,9 @@
         }
     var mousemove = function(event, d) {
     tooltip
-        .html("The exact value of this cell is: " + d.gdp)
+        .html("<center>" + d.country + "</center>"+
+         "<span class=\"left\">Population<span><span class=\"center\">:<span><span class=\"right\">"+d.population+"</span>")
+        
         .style("left", (d3.pointer(event)[0]) + "px")
         .style("top", (d3.pointer(event)[1]) + "px")
     }
