@@ -150,14 +150,17 @@ d3.csv("scatterdata.csv", parse).then(function(data){
     //z.domain(countries.map(function(c) { return c.id; }));
    
     //Draw Scatterplot
-        svg.selectAll(".dot")
+    svg.selectAll(".dot")
         .data(data)
         .enter().append("circle")
         .attr("class", "dot")
         .attr("r", function(d) {return d.ec})
         .attr("cx", function(d) {return xScale(d.gdp);})
         .attr("cy", function(d) {return yScale(d.ecc);})
-        .style("fill", function (d) { return colors(d.country); });
+        .style("fill", function (d) { return colors(d.country); })
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseout", mouseout);
     //Add .on("mouseover", .....
     //Add Tooltip.html with transition and style
     //Then Add .on("mouseout", ....
@@ -166,7 +169,7 @@ d3.csv("scatterdata.csv", parse).then(function(data){
     // Call the function d3.behavior.zoom to Add zoom
 
     //Draw Country Names
-        svg.selectAll(".text")
+    svg.selectAll(".text")
         .data(data)
         .enter().append("text")
         .attr("class","text")
@@ -189,13 +192,13 @@ d3.csv("scatterdata.csv", parse).then(function(data){
                       .style("stroke", "black")
                       .style("opacity", 0.8)
                   }
-                  var mousemove = function(d) {
+                  var mousemove = function(event, d) {
                     tooltip
                       .html("The exact value of this cell is: " + d.gdp)
-                      .style("left", (d3.mouse(this)[0] + d.gdp) + "px")
-                      .style("top", (d3.mouse(this)[1]+ d.ecc) + "px")
+                      .style("left", (d3.pointer(event)+d.gdp) + "px")
+                      .style("top", d3.pointer(event)+d.ecc + "px")
                   }
-                  var mouseleave = function(d) {
+                  var mouseout = function(d) {
                     tooltip
                       .style("opacity", 0)
                     d3.select(this)
@@ -203,11 +206,11 @@ d3.csv("scatterdata.csv", parse).then(function(data){
                       .style("opacity", 0)
                   }
     svg.selectAll()
-        .data(data, function(d) {return d.country+':'+d.gdp;})
+        .data(data)
         .enter()
         .append("rect")
-        .attr("x", function(d) { return xScale(d.gdp) })
-        .attr("y", function(d) { return yScale(d.ecc) })
+        .attr("x", function(d) { return xScale(d.gdp-1) })
+        .attr("y", function(d) { return yScale(d.ecc+25) })
         .attr("rx", 4)
         .attr("ry", 4)
         .attr("width", 100 )
@@ -216,9 +219,6 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         .style("stroke-width", 1)
         .style("stroke", "none")
         .style("opacity", 0)
-        .on("mouseover", mouseover)
-        .on("mousemove", mousemove)
-        .on("mouseleave", mouseleave)
 
  //x-axis
     svg.append("g")
