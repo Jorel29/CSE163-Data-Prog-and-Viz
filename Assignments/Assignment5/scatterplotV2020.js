@@ -132,7 +132,7 @@
        .tickPadding(0);
     
     //Get Data
-    function parse(d, columns) {
+    function parse(d) {
         return{
           country: d.country,
           gdp: +d.gdp,
@@ -147,7 +147,7 @@ d3.csv("scatterdata.csv", parse).then(function(data){
     // Define domain for xScale and yScale
     console.log(d3.min(data, function(d) { return d.gdp; }));
 
-    xScale.domain([0,width]);
+    xScale.domain([0,width/50]);
 
     yScale.domain([
       0,
@@ -204,11 +204,13 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         //svg.selectAll("text").attr("transform", event.transform);
         //svg.selectAll("circle").attr("transform",event.transform);
         svg.attr("transform", event.transform);
-        gX.call(xAxis.scale(event.transform.rescaleX(xScale)));
+        gX.call(xAxis.scale(event.transform.rescaleX(xScale).interpolate(d3.interpolateRound)));
         gY.call(yAxis.scale(event.transform.rescaleY(yScale)));
     }
 
-    
+    svg.call(zoom);
+
+
     //Draw Country Names
     svg.selectAll(".text")
         .data(data)
@@ -221,21 +223,21 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         .text(function (d) {return d.country; });
 
  //x-axis
-  var gX =  svg.append("g")
+    svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis)
         .append("text")
-        .attr("class", "label")
-        .attr("y", 50)
-        .attr("x", width/2)
-        .style("text-anchor", "middle")
-        .attr("font-size", "12px")
-        .text("GDP (in Trillion US Dollars) in 2010");
+            .attr("class", "label")
+            .attr("y", 50)
+            .attr("x", width/2)
+            .style("text-anchor", "middle")
+            .attr("font-size", "12px")
+            .text("GDP (in Trillion US Dollars) in 2010");
 
     
     //Y-axis
-   var gY = svg.append("g")
+    svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
         .append("text")
@@ -248,5 +250,4 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         .attr("font-size", "12px")
         .text("Energy Consumption per Capita (in Million BTUs per person)");
     
-    svg.call(zoom);
 });
