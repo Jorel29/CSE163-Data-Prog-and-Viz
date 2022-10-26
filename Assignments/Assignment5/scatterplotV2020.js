@@ -118,9 +118,15 @@
         .range([height, 0]);
     
     //Define Tooltip here
-    var tooltip = d3.select("#div_template")
-                .append("div")
-                .attr("class", "tooltip")
+    var tooltip = d3.select(".dot")
+        .append("div")
+        .style("opacity", 1)
+        .attr("class", "tooltip")
+        .style("background-color", "black")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px")
     
     var mouseover = function(d) {
         tooltip

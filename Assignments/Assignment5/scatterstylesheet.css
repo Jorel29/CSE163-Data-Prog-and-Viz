@@ -12,11 +12,12 @@ body {
 .dot {
   stroke: #000;
 }
-/*
+
 .tooltip{
   stroke: #000;
-  /*background-color: white;
+  background-color: white;
+  opacity: 1;
   border: transparent;
   border-radius: 5px;
   padding: 3px;
-}*/
+}
