@@ -158,11 +158,13 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         .attr("cx", function(d) {return xScale(d.gdp);})
         .attr("cy", function(d) {return yScale(d.ecc);})
         .style("fill", function (d) { return colors(d.country); })
+        //Add .on("mouseover", .....
+        //Add Tooltip.html with transition and style
+        //Then Add .on("mouseout", ....
         .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
         .on("mouseout", mouseout);
-    //Add .on("mouseover", .....
-    //Add Tooltip.html with transition and style
-    //Then Add .on("mouseout", ....
+    
     
     //Scale Changes as we Zoom
     // Call the function d3.behavior.zoom to Add zoom
@@ -184,26 +186,27 @@ d3.csv("scatterdata.csv", parse).then(function(data){
                 .attr("class", "tooltip")
                 .style("background-color", "white")
                 .style("border", "solid")
+
     var mouseover = function(d) {
-                    tooltip
-                      .style("opacity", 0.8)
-                    d3.select(this)
-                      .style("stroke", "black")
-                      .style("opacity", 0.8)
-                  }
-                  /*var mousemove = function(event, d) {
-                    tooltip
-                      .html("The exact value of this cell is: " + d.gdp)
-                      .style("left", (d3.pointer(event)+d.gdp) + "px")
-                      .style("top", d3.pointer(event)+d.ecc + "px")
-                  }*/
-                  var mouseout = function(d) {
-                    tooltip
-                      .style("opacity", 0)
-                    d3.select(this)
-                      .style("stroke", "none")
-                      .style("opacity", 0)
-                  }
+        tooltip
+            .style("opacity", 0.8)
+        d3.select(this)
+            .style("stroke", "black")
+            .style("opacity", 0.8)
+        }
+    var mousemove = function(event, d) {
+    tooltip
+        .html("The exact value of this cell is: " + d.gdp)
+        .style("left", (d3.pointer(event)+d.gdp) + "px")
+        .style("top", d3.pointer(event)+d.ecc + "px")
+    }
+    var mouseout = function(d) {
+    tooltip
+        .style("opacity", 0)
+    d3.select(this)
+        .style("stroke", "none")
+        .style("opacity", 0)
+    }
     svg.selectAll()
         .data(data)
         .enter()
