@@ -148,7 +148,25 @@ d3.csv("scatterdata.csv", parse).then(function(data){
     ]);
 
     //z.domain(countries.map(function(c) { return c.id; }));
-   
+    var tooltip = d3.select(".tooltip")
+                .append("div")
+    
+    var mouseover = function(d) {
+        tooltip
+            .style("opacity", 0.8)
+        d3.select(this)
+            .style("opacity", 0.8)
+        }
+    var mousemove = function(event, d) {
+    tooltip
+        .html("The exact value of this cell is: " + d.gdp)
+    }
+    var mouseout = function(d) {
+    tooltip
+        .style("opacity", 0)
+    d3.select(this)
+        .style("opacity", 1)
+    }
     //Draw Scatterplot
     svg.selectAll(".dot")
         .data(data)
@@ -179,44 +197,18 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         .attr("y", function(d) {return yScale(d.ecc);})
         .style("fill", "black")
         .text(function (d) {return d.country; });
-    
-    var tooltip = d3.select("#div_template")
-                .append("div")
-                .style("opacity", 0)
-                .attr("class", "tooltip")
-                .style("background-color", "white")
-                .style("border", "solid")
 
-    var mouseover = function(d) {
-        tooltip
-            .style("opacity", 0.8)
-        d3.select(this)
-            .style("stroke", "black")
-            .style("opacity", 0.8)
-        }
-    var mousemove = function(event, d) {
-    tooltip
-        .html("The exact value of this cell is: " + d.gdp)
-        .style("left", (d3.pointer(event)+d.gdp) + "px")
-        .style("top", d3.pointer(event)+d.ecc + "px")
-    }
-    var mouseout = function(d) {
-    tooltip
-        .style("opacity", 0)
-    d3.select(this)
-        .style("stroke", "none")
-        .style("opacity", 0)
-    }
+    
     svg.selectAll()
         .data(data)
         .enter()
         .append("rect")
-        .attr("x", function(d) { return xScale(d.gdp-1) })
-        .attr("y", function(d) { return yScale(d.ecc+25) })
+        .attr("x", function(d) { return xScale(d.gdp) })
+        .attr("y", function(d) { return yScale(d.ecc) })
         .attr("rx", 4)
         .attr("ry", 4)
-        .attr("width", 100 )
-        .attr("height", 50 )
+        .attr("width", 0 )
+        .attr("height", 0 )
         .style("fill", function(d) { return colors(d.country)} )
         .style("stroke-width", 1)
         .style("stroke", "none")
