@@ -204,7 +204,7 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         //svg.selectAll("text").attr("transform", event.transform);
         //svg.selectAll("circle").attr("transform",event.transform);
         svg.attr("transform", event.transform);
-        gX.call(xAxis.scale(event.transform.rescaleX(xScale).interpolate(d3.interpolateRound)));
+        gX.call(xAxis.scale(event.transform.rescaleX(xScale)));
         gY.call(yAxis.scale(event.transform.rescaleY(yScale)));
     }
 
@@ -223,7 +223,7 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         .text(function (d) {return d.country; });
 
  //x-axis
-    svg.append("g")
+    var gX = svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis)
@@ -237,7 +237,7 @@ d3.csv("scatterdata.csv", parse).then(function(data){
 
     
     //Y-axis
-    svg.append("g")
+    var gY = svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
         .append("text")
