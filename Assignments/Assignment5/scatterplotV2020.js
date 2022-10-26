@@ -121,8 +121,15 @@
     
       
        //Define Axis
-    var xAxis = d3.axisBottom(xScale);
-    var yAxis = d3.axisLeft(yScale);
+    var xAxis = d3.axisBottom(xScale)
+       .ticks(width*2/height*2)
+       .tickSize(8)
+       
+   
+   var yAxis = d3.axisLeft(yScale)
+       .ticks(10)
+       .tickSize(5)
+       .tickPadding(0);
     
     //Get Data
     function parse(d, columns) {
@@ -140,11 +147,11 @@ d3.csv("scatterdata.csv", parse).then(function(data){
     // Define domain for xScale and yScale
     console.log(d3.min(data, function(d) { return d.gdp; }));
 
-    xScale.domain([0,16]);
+    xScale.domain([0,width]);
 
     yScale.domain([
       0,
-      450
+      height
     ]);
 
     //z.domain(countries.map(function(c) { return c.id; }));
@@ -190,6 +197,18 @@ d3.csv("scatterdata.csv", parse).then(function(data){
     //Scale Changes as we Zoom
     // Call the function d3.behavior.zoom to Add zoom
 
+    var zoom = d3.zoom()
+      .scaleExtent([1, 5])
+      .on("zoom", zoomed)
+    function zoomed(event) {
+        //svg.selectAll("text").attr("transform", event.transform);
+        //svg.selectAll("circle").attr("transform",event.transform);
+        svg.attr("transform", event.transform);
+        gX.call(xAxis.scale(event.transform.rescaleX(xScale)));
+        gY.call(yAxis.scale(event.transform.rescaleY(yScale)));
+    }
+
+    
     //Draw Country Names
     svg.selectAll(".text")
         .data(data)
@@ -202,7 +221,7 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         .text(function (d) {return d.country; });
 
  //x-axis
-    svg.append("g")
+  var gX =  svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis)
@@ -216,7 +235,7 @@ d3.csv("scatterdata.csv", parse).then(function(data){
 
     
     //Y-axis
-    svg.append("g")
+   var gY = svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
         .append("text")
@@ -228,7 +247,6 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         .style("text-anchor", "end")
         .attr("font-size", "12px")
         .text("Energy Consumption per Capita (in Million BTUs per person)");
-
     
-     
+    svg.call(zoom);
 });
