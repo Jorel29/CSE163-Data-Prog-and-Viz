@@ -118,27 +118,37 @@
         .range([height, 0]);
     
     //Define Tooltip here
-    var tooltip = d3.select(".dot")
+    var tooltip = d3.select("body")
         .append("div")
-        .style("opacity", 1)
+        .style("opacity", 0)
         .attr("class", "tooltip")
-        .style("background-color", "black")
+        .style("background-color", "steelblue")
         .style("border", "solid")
         .style("border-width", "2px")
         .style("border-radius", "5px")
         .style("padding", "5px")
+        .style("top", "0px")
+        .style("left", "0px")
     
-    var mouseover = function(d) {
+    var mouseover = function(event, d) {
+        console.log(tooltip.style.top);
         tooltip
             .style("opacity", 0.8)
+            .style("left", d3.pointer(event)[0] + "px")
+            .style("top", d3.pointer(event)[1] + "px")
         d3.select(this)
             .style("opacity", 0.8)
+        console.log(d3.pointer(event))
+        console.log(event.pageX)
+        console.log(d3.pointer(event)[0])
+        console.log(d3.pointer(event)[1])
+        //console.log(tooltip.style.top);
         }
     var mousemove = function(event, d) {
     tooltip
         .html("The exact value of this cell is: " + d.gdp)
-        .style("left", (d3.pointer(event)+70) + "px")
-        .style("top", (d3.pointer(event)) + "px")
+        .style("left", (d3.pointer(event)[0]) + "px")
+        .style("top", (d3.pointer(event)[1]) + "px")
     }
     var mouseout = function(d) {
     tooltip
@@ -180,9 +190,8 @@ d3.csv("scatterdata.csv", parse).then(function(data){
       0,
       height
     ]);
-
-    //z.domain(countries.map(function(c) { return c.id; }));
     
+    //z.domain(countries.map(function(c) { return c.id; }));
     //Draw Scatterplot
     svg.selectAll(".dot")
         .data(data)
