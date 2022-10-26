@@ -138,12 +138,20 @@
         }
     var mousemove = function(event, d) {
     tooltip
-        .html("<center>" + d.country + "</center>"+
+        .html("<div class=\"title\">"+
+                d.country+
+                "</div>"+
             "<div class=\"item\">"+
                 "<p class=\"left\">Population<p><p class=\"center\">:<p><p class=\"right\">"+d.population+"</p>"+
             "</div>"+
             "<div class=\"item\">"+
             "<p class=\"left\">GDP<p><p class=\"center\">:<p><p class=\"right\">"+d.gdp+"</p>"+
+            "</div>"+
+            "<div class=\"item\">"+
+            "<p class=\"left\">EPC<p><p class=\"center\">:<p><p class=\"right\">"+d.ecc+"</p>"+
+            "</div>"+
+            "<div class=\"item\">"+
+            "<p class=\"left\">Total<p><p class=\"center\">:<p><p class=\"right\">"+d.ec+"</p>"+
             "</div>")
         
         .style("left", (d3.pointer(event)[0]) + "px")

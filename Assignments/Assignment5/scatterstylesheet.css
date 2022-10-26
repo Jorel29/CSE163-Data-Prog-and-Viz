@@ -3,6 +3,8 @@ body {
 }
 .title{
   text-align: center;
+  width: auto;
+  height: 1em;
 }
 .item{
   display: flex;
