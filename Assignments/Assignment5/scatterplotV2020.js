@@ -118,6 +118,7 @@
         .range([height, 0]);
     
     //Define Tooltip here
+    
     var tooltip = d3.select("body")
         .append("div")
         .style("opacity", 0)
@@ -164,7 +165,10 @@
         .style("opacity", 1)
     }
       
-       //Define Axis
+    //Define Axis
+    //=====================================================
+    // modifed code from Mike Bostock Pan Zoom Axes
+    //=====================================================
     var xAxis = d3.axisBottom(xScale)
        .ticks(width*2/height*2)
        .tickSize(8)
@@ -174,7 +178,7 @@
        .ticks(10)
        .tickSize(5)
        .tickPadding(0);
-    
+    //======================================================
     //Get Data
     function parse(d) {
         return{
@@ -221,10 +225,9 @@ d3.csv("scatterdata.csv", parse).then(function(data){
 
     var zoom = d3.zoom()
       .scaleExtent([1, 5])
+      .translateExtent([[-100, -100], [width + 90, height + 100]])
       .on("zoom", zoomed)
     function zoomed(event) {
-        //svg.selectAll("text").attr("transform", event.transform);
-        //svg.selectAll("circle").attr("transform",event.transform);
         svg.attr("transform", event.transform);
         gX.call(xAxis.scale(event.transform.rescaleX(xScale)));
         gY.call(yAxis.scale(event.transform.rescaleY(yScale)));
