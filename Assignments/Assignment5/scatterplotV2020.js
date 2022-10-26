@@ -125,6 +125,21 @@
     var yAxis = d3.axisLeft(yScale);
     
     //Get Data
+    function parse(d, columns) {
+        for (var i = 1, n = columns.length, c; i < n; ++i) 
+          d[c = columns[i]] = +d[c];//stores the data in per column format (associating the energy per column)
+        return d;
+      }
+d3.csv("scatterdata.csv", parse).then(function(data){
+
+    var countries = data.columns.slice(1).map(function(id) {
+        return {
+          id: id,
+          values: data.map(function(d) {
+            return {year: d.year, energy: d[id]};
+          })
+        };
+      });
     // Define domain for xScale and yScale
     
     
@@ -187,4 +202,4 @@
 
     
      
-//}
+});
