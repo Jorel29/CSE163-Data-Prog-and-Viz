@@ -1,8 +1,8 @@
 # To-Do List for Assignment 5
-- [ ] Read Data from scatterdata.csv
-    - [ ] Redefine xScale and yScale domain
-    - [ ] redefine radius of the circle as total energy consumption
-    - [ ] Redefine colors
+- [x] Read Data from scatterdata.csv
+    - [x] Redefine xScale and yScale domain
+    - [x] redefine radius of the circle as total energy consumption
+    - [x] Redefine colors
 - [ ] Add ToolTip
     - [ ] change scatterstyle.css to have tooltip style
     - [ ] insert a 'var tooltip'
