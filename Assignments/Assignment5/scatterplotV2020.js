@@ -1,4 +1,4 @@
-    var scatterdataset = [ {
+   /* var scatterdataset = [ {
         "name": "United States",
         "country": "United States",
         "gdp": 14.9,
@@ -90,7 +90,7 @@
         "gdp": 1.01,
         "epc": 222,
         "total": 10.7
-    }];
+    }];*/
 
     //Define Margin
     var margin = {left: 80, right: 80, top: 50, bottom: 50 }, 
@@ -126,34 +126,33 @@
     
     //Get Data
     function parse(d, columns) {
-        for (var i = 1, n = columns.length, c; i < n; ++i) 
-          d[c = columns[i]] = +d[c];//stores the data in per column format (associating the energy per column)
-        console.log(d);
-        return d;
+        return{
+          country: d.country,
+          gdp: d.gdp,
+          population: d.population,
+          ecc: d.ecc,
+          ec: d.ec
+        }
+        //for (var i = 1, n = columns.length, c; i < n; ++i) 
+        //  d[c = columns[i]] = +d[c];//stores the data in per column format (associating the energy per column)
+        //console.log(d);
+        //return d;
       }
 d3.csv("scatterdata.csv", parse).then(function(data){
-
-    var countries = data.columns.slice(1).map(function(id) {
-        return {
-          id: id,
-          values: data.map(function(d) {
-            return {year: d.year, energy: d[id]};
-          })
-        };
-      });
+    console.log(data);
+    //console.log(countries);
     // Define domain for xScale and yScale
     
     
    
     //Draw Scatterplot
         svg.selectAll(".dot")
-        .data(scatterdataset)
+        .data(data)
         .enter().append("circle")
         .attr("class", "dot")
-        //need to redefine r
-        .attr("r", function(d) {return 10})
+        .attr("r", function(d) {return d.ec})
         .attr("cx", function(d) {return xScale(d.gdp);})
-        .attr("cy", function(d) {return yScale(d.epc);})
+        .attr("cy", function(d) {return yScale(d.ecc);})
         .style("fill", function (d) { return colors(d.country); });
     //Add .on("mouseover", .....
     //Add Tooltip.html with transition and style
@@ -164,14 +163,14 @@ d3.csv("scatterdata.csv", parse).then(function(data){
 
     //Draw Country Names
         svg.selectAll(".text")
-        .data(scatterdataset)
+        .data(data)
         .enter().append("text")
         .attr("class","text")
         .style("text-anchor", "start")
         .attr("x", function(d) {return xScale(d.gdp);})
-        .attr("y", function(d) {return yScale(d.epc);})
+        .attr("y", function(d) {return yScale(d.ecc);})
         .style("fill", "black")
-        .text(function (d) {return d.name; });
+        .text(function (d) {return d.country; });
 
  //x-axis
     svg.append("g")
