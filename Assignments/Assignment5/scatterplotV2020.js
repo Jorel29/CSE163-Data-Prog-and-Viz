@@ -98,7 +98,7 @@
         height = 500 - margin.top - margin.bottom;
 
     //Define Color
-    var colors = d3.schemeCategory10;
+    var colors = d3.scaleOrdinal(d3.schemeCategory10);
 
     //Define SVG
       var svg = d3.select("body")
@@ -113,7 +113,7 @@
         .domain([0,16]) //Need to redefine this later after loading the data
         .range([0, width]);
 
-    var yScale = d3.scale.linear()
+    var yScale = d3.scaleLinear()
         .domain([0,450]) //Need to redfine this later after loading the data
         .range([height, 0]);
     
@@ -121,8 +121,8 @@
     
       
        //Define Axis
-    var xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickPadding(2);
-    var yAxis = d3.svg.axis().scale(yScale).orient("left").tickPadding(2);
+    var xAxis = d3.axisBottom(xScale);
+    var yAxis = d3.axisLeft(yScale);
     
     //Get Data
     // Define domain for xScale and yScale
@@ -135,7 +135,7 @@
         .enter().append("circle")
         .attr("class", "dot")
         //need to redefine r
-        .attr("r", "1")
+        .attr("r", function(d) {return 10})
         .attr("cx", function(d) {return xScale(d.gdp);})
         .attr("cy", function(d) {return yScale(d.epc);})
         .style("fill", function (d) { return colors(d.country); });
