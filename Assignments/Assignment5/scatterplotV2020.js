@@ -105,9 +105,13 @@
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    var view = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    var scales = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+ 
     //Define Scales   
     var xScale = d3.scaleLinear()
          //Need to redefine this later after loading the data
@@ -117,8 +121,13 @@
          //Need to redfine this later after loading the data
         .range([height, 0]);
     
+    var zScale = d3.scaleLinear()
+        .domain([0,101])
+        .range([1,50]);
     //Define Tooltip here
-    
+    //============================================================================
+    // modified from Yan Holtz
+    //============================================================================
     var tooltip = d3.select("body")
         .append("div")
         .style("opacity", 0)
@@ -127,14 +136,14 @@
     var mouseover = function(event, d) {
         tooltip
             .style("opacity", 0.8)
-            .style("left", d3.pointer(event)[0] + "px")
-            .style("top", d3.pointer(event)[1] + "px")
+            .style("left", (d3.pointer(event)[0]) + "px")
+            .style("top", (d3.pointer(event)[1]) + "px")
         d3.select(this)
             .style("opacity", 0.8)
-        console.log(d3.pointer(event))
-        console.log(event.pageX)
-        console.log(d3.pointer(event)[0])
-        console.log(d3.pointer(event)[1])
+        //console.log(d3.pointer(event))
+        //console.log(event.pageX)
+        //console.log(d3.pointer(event)[0])
+        //console.log(d3.pointer(event)[1])
         //console.log(tooltip.style.top);
         }
     var mousemove = function(event, d) {
@@ -143,16 +152,16 @@
                 d.country+
                 "</div>"+
             "<div class=\"item\">"+
-                "<p class=\"left\">Population<p><p class=\"center\">:<p><p class=\"right\">"+d.population+"</p>"+
+                "<p class=\"left\">Population<p><p class=\"center\">:<p><p class=\"right\">"+d.population+" Million</p>"+
             "</div>"+
             "<div class=\"item\">"+
-            "<p class=\"left\">GDP<p><p class=\"center\">:<p><p class=\"right\">"+d.gdp+"</p>"+
+            "<p class=\"left\">GDP<p><p class=\"center\">:<p><p class=\"right\"> $"+d.gdp+" Trillion</p>"+
             "</div>"+
             "<div class=\"item\">"+
-            "<p class=\"left\">EPC<p><p class=\"center\">:<p><p class=\"right\">"+d.ecc+"</p>"+
+            "<p class=\"left\">EPC<p><p class=\"center\">:<p><p class=\"right\">"+d.ecc+" Million BTUs</p>"+
             "</div>"+
             "<div class=\"item\">"+
-            "<p class=\"left\">Total<p><p class=\"center\">:<p><p class=\"right\">"+d.ec+"</p>"+
+            "<p class=\"left\">Total<p><p class=\"center\">:<p><p class=\"right\">"+d.ec+" Trillion BTUs</p>"+
             "</div>")
         
         .style("left", (d3.pointer(event)[0]) + "px")
@@ -164,13 +173,13 @@
     d3.select(this)
         .style("opacity", 1)
     }
-      
+    //=======================================================================================================
     //Define Axis
-    //=====================================================
+    //=======================================================================================================
     // modifed code from Mike Bostock Pan Zoom Axes
-    //=====================================================
+    //=======================================================================================================
     var xAxis = d3.axisBottom(xScale)
-       .ticks(width*2/height*2)
+       .ticks((width*2/height)*2)
        .tickSize(8)
        
    
@@ -178,7 +187,7 @@
        .ticks(10)
        .tickSize(5)
        .tickPadding(0);
-    //======================================================
+    //========================================================================================================
     //Get Data
     function parse(d) {
         return{
@@ -194,21 +203,23 @@ d3.csv("scatterdata.csv", parse).then(function(data){
     //console.log(countries);
     // Define domain for xScale and yScale
     console.log(d3.min(data, function(d) { return d.gdp; }));
-
+    //==============================================================================================================
+    // modified idea from Mike Bostock
+    //==============================================================================================================
+    console.log(d3.max(data, function(d){return d.gdp+2}));
     xScale.domain([0,width/50]);
 
     yScale.domain([
       0,
       height
     ]);
-    
-    //z.domain(countries.map(function(c) { return c.id; }));
+
     //Draw Scatterplot
-    svg.selectAll(".dot")
+    var circles = view.selectAll(".dot")
         .data(data)
         .enter().append("circle")
         .attr("class", "dot")
-        .attr("r", function(d) {return d.ec})
+        .attr("r", function(d) {return zScale(d.ec)})
         .attr("cx", function(d) {return xScale(d.gdp);})
         .attr("cy", function(d) {return yScale(d.ecc);})
         .style("fill", function (d) { return colors(d.country); })
@@ -222,22 +233,23 @@ d3.csv("scatterdata.csv", parse).then(function(data){
     
     //Scale Changes as we Zoom
     // Call the function d3.behavior.zoom to Add zoom
-
+    //====================================================================================
+    //modifed from Mike bostocks Pan & Zoom Axes
+    //====================================================================================
     var zoom = d3.zoom()
       .scaleExtent([1, 5])
-      .translateExtent([[-100, -100], [width + 90, height + 100]])
+      .translateExtent([[-100, -100], [width*2, height*2]])
       .on("zoom", zoomed)
     function zoomed(event) {
-        svg.attr("transform", event.transform);
+        circles.attr("transform", event.transform);
+        text.attr("transform", event.transform);
         gX.call(xAxis.scale(event.transform.rescaleX(xScale)));
         gY.call(yAxis.scale(event.transform.rescaleY(yScale)));
     }
 
-    svg.call(zoom);
-
 
     //Draw Country Names
-    svg.selectAll(".text")
+    var text = view.selectAll(".text")
         .data(data)
         .enter().append("text")
         .attr("class","text")
@@ -248,13 +260,13 @@ d3.csv("scatterdata.csv", parse).then(function(data){
         .text(function (d) {return d.country; });
 
  //x-axis
-    var gX = svg.append("g")
+    var gX = scales.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis)
-        .append("text")
+    scales.append("text")
             .attr("class", "label")
-            .attr("y", 50)
+            .attr("y", height+ margin.bottom)
             .attr("x", width/2)
             .style("text-anchor", "middle")
             .attr("fill", "black")
@@ -262,10 +274,10 @@ d3.csv("scatterdata.csv", parse).then(function(data){
             .text("GDP (in Trillion US Dollars) in 2010");
 
     //Y-axis
-    var gY = svg.append("g")
+    var gY = scales.append("g")
         .attr("class", "y axis")
         .call(yAxis)
-        .append("text")
+    scales.append("text")
             .attr("class", "label")
             .attr("transform", "rotate(-90)")
             .attr("y", -50)
@@ -275,5 +287,61 @@ d3.csv("scatterdata.csv", parse).then(function(data){
             .attr("fill", "black")
             .attr("font-size", "12px")
             .text("Energy Consumption per Capita (in Million BTUs per person)");
+
+    //draw legend
+    var rectX = width-300
+    var rectY = height/3 +100
+    svg.append("rect")
+            .attr("class", "legend")
+            .attr("x", rectX)
+            .attr("y", rectY)
+            .attr("width", "275px")
+            .attr("height", "200px")
+            .attr("fill", "light gray")
+    svg.append("text")
+        .attr("x", rectX + 10)
+        .attr("y", rectY + 25)
+        .attr("fill", "black")
+        .attr("font-size", "12px")
+        .text("1 Trillion BTUs");
     
+    svg.append("text")
+        .attr("x", rectX +10)
+        .attr("y", rectY + 50)
+        .attr("fill", "black")
+        .attr("font-size", "12px")
+        .text("10 Trillion BTUs");
+    
+    svg.append("text")
+        .attr("x", rectX +10)
+        .attr("y",rectY + 125)
+        .attr("fill", "black")
+        .attr("font-size", "12px")
+        .text("100 Trillion BTUs");
+    
+    svg.append("text")
+        .attr("x", rectX + 10)
+        .attr("y", rectY + 185)
+        .attr("fill", "red")
+        .attr("font-size", "12px")
+        .text("Total Energy Consumption");
+    
+    svg.append("circle")
+        .attr("r", zScale(5))
+        .attr("cx", rectX + 200)
+        .attr("cy", rectY + 25)
+        .style("fill", "white");
+    
+    svg.append("circle")
+        .attr("r", zScale(20))
+        .attr("cx", rectX + 200)
+        .attr("cy", rectY + 50)
+        .style("fill", "white");
+    
+    svg.append("circle")
+        .attr("r", zScale(100))
+        .attr("cx", rectX + 200)
+        .attr("cy", rectY + 125)
+        .style("fill", "white");
+    svg.call(zoom);
 });

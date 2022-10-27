@@ -35,18 +35,23 @@ body {
 .dot {
   stroke: #000;
 }
-
+.label{
+  fill:black;
+}
 .tooltip{
   stroke: #000;
   background-color: white;
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 200px;
+  width: 300px;
   height: 75px;
   opacity: 0;
   border: solid;
   border-radius: 5px;
   border-width: 2px;
   padding: 3px;
+}
+.legend{
+  fill: lightgray;
 }
