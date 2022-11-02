@@ -36,7 +36,7 @@ d3.json("miserables.json").then(function(graph) {
   }
   console.log(d3.max(graph.links , function(d) {return d.value} ))
   var nodeScale = d3.scaleLinear()
-                .range([1, d3.max(graph.links , function(d) {return d.value} ) ])
+                .range([5, d3.max(graph.links , function(d) {return d.value} ) ])
   
   var link = svg.append("g")
       .attr("class", "links")
