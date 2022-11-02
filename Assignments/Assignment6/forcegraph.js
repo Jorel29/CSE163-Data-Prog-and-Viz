@@ -24,13 +24,17 @@ var simulation = d3.forceSimulation()
 d3.json("miserables.json").then(function(graph) {
   console.log(graph)
   console.log(graph.links.length)
-  
   for(var i = 0; i < graph.links.length; i++){
     graph.links[i].strength = 1/(graph.links[i].value*2);
     //console.log(graph.links[i].strength)
     console.log( graph.links[i].source + ", " + graph.links[i].target + ", " + graph.links[i].value + ", " + graph.links[i].strength)
+    
   }
- 
+  for(var j = 0; j < graph.nodes.length; j++){
+    
+    graph.nodes[j].size = 5
+    console.log(graph.nodes[j].size)
+  }
   console.log(d3.max(graph.links , function(d) {return d.value} ))
   var nodeScale = d3.scaleLinear()
                 .range([5, d3.max(graph.links , function(d) {return d.value} ) ])
