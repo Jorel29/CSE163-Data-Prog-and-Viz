@@ -19,7 +19,7 @@ var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2))
-    .force("collide", d3.forceCollide());
+    .force("collision", d3.forceCollide());
 
 
 d3.json("miserables.json").then(function(graph) {
@@ -53,22 +53,24 @@ d3.json("miserables.json").then(function(graph) {
   //button logic help from karthi here
   var toggle = true
   d3.select("button")
-    .on("click", function(){
+    //.enter().select("button")
+    .on("click", function(d){
         if(toggle = true){
           simulation.stop();
           toggle = false
-          console.log(toggle)
+          console.log(d.attr("value"))
         }
         else{
           simulation.restart();
           toggle = true
-          console.log(toggle)
+          console.log("other")
         }
     })
 
   console.log(graph.nodes)
   console.log(d3.max(graph.links , function(d) {return d.value} ))
   var nodeScale = d3.scaleOrdinal()
+                .domain([1,d3.max(graph.nodes , function(d) {return d.size} )])
                 .range([5,d3.max(graph.nodes , function(d) {return d.size} ) ])
   
   var link = svg.append("g")
@@ -97,16 +99,17 @@ d3.json("miserables.json").then(function(graph) {
       .nodes(graph.nodes)
       .on("tick", ticked);
   
-  simulation.force("collide")
-      .radius(15)
+  simulation.force("collision")
+      .radius(20)
+      .strength(1.15)
 
   simulation.force("charge")
-      .strength(-2*d3.max(graph.links ,function(d) {return d.value}))
+      .strength(-3*d3.max(graph.links ,function(d) {return d.value}))
 
   simulation.force("link")
       .links(graph.links)
       .strength(function (d){ return d.strength})
-      .distance(function (d){ return d.strength/2});
+      .distance(function (d){ return d.strength*3});
 
   function ticked() {
     
