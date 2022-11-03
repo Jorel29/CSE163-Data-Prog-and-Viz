@@ -39,19 +39,19 @@ d3.json("miserables.json").then(function(graph) {
     //console.log( links[i].source + ", " + links[i].target + ", " + links[i].value + ", " + links[i].strength)
     //console.log(nodes[j].id)
     //console.log(nodes[j].id + " " + links[i].target)
-    if(links[i].source == links[i].id && j < nodes.length){
+    if(links[i].source == nodes[j].id && j < nodes.length){
       if(nodes[j].size < links[i].value)
-          nodes[j].size = count(links[i].value)
+          nodes[j].size = (links[i].value)
       //console.log(nodes[j].size)
     }else{
       j++
     }
   }
-  for(var j = 0; j < graph.nodes.length; j++){
+  /*for(var j = 0; j < graph.nodes.length; j++){
     //nodes[j].size = nodes[j].count();
-    console.log(nodes[j].count())
+    //console.log(nodes[j].count())
     //console.log(graph.nodes[j].size)
-  }
+  }*/
   //button logic help from karthi here
   var button = d3.select("button");
   button.on("click", function(){
@@ -71,7 +71,7 @@ d3.json("miserables.json").then(function(graph) {
   //console.log(d3.max(graph.links , function(d) {return d.value} ))
   var nodeScale = d3.scaleOrdinal()
                 .domain([1,d3.max(graph.nodes , function(d) {return d.size} )])
-                .range([5,d3.max(graph.nodes , function(d) {return d.size} ) ])
+                .range([5,20])
   
   var link = svg.append("g")
       .attr("class", "links")
@@ -85,8 +85,7 @@ d3.json("miserables.json").then(function(graph) {
     .selectAll("circle")
     .data(graph.nodes)
     .enter().append("circle")
-      .attr("r", function(d) {return count(links[d].source)} )
-      //.attr("r", function(d) {return nodeScale(d.size)})
+      .attr("r", function(d) {return nodeScale(d.size)} )
       .attr("fill", function(d) { return color(d.group); })
       .call(d3.drag()
           .on("start", dragstarted)
