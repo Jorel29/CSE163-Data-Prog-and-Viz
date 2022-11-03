@@ -23,52 +23,52 @@ var simulation = d3.forceSimulation()
 
 
 d3.json("miserables.json").then(function(graph) {
-  console.log(graph)
-  console.log(graph.links.length)
-  //
-  sizes = new Array(graph.nodes.length)
-  for(var j = 0; j < graph.nodes.length; j++){
+  //console.log(graph)
+  //console.log(graph.links.length)
+  
+  var nodes = graph.nodes
+  var links = graph.links
+  for(var j = 0; j < nodes.length; j++){
     //console.log(graph.nodes[j].id)
-    graph.nodes[j].size = 5
+    nodes[j].size = 5
     //console.log(graph.nodes[j].size)
   }
-  for(var i = 0, j = 0; i < graph.links.length; i++){
-    graph.links[i].strength = 1/(graph.links[i].value);
-    //console.log(graph.links[i].strength)
-    //console.log( graph.links[i].source + ", " + graph.links[i].target + ", " + graph.links[i].value + ", " + graph.links[i].strength)
-    //console.log(graph.nodes[j].id)
-    console.log(graph.nodes[j].id + " " + graph.links[i].source)
-    if(graph.nodes[j].id == graph.links[i].source && j < graph.nodes.length){
-      graph.nodes[j].size = (graph.links[i].value)
-      console.log(graph.nodes[j].size)
+  for(var i = 0, j = 0; i < links.length; i++){
+    links[i].strength = 1/(links[i].value);
+    //console.log(links[i].strength)
+    //console.log( links[i].source + ", " + links[i].target + ", " + links[i].value + ", " + links[i].strength)
+    //console.log(nodes[j].id)
+    //console.log(nodes[j].id + " " + links[i].target)
+    if(links[i].source == links[i].id && j < nodes.length){
+      if(nodes[j].size < links[i].value)
+          nodes[j].size = count(links[i].value)
+      //console.log(nodes[j].size)
     }else{
       j++
     }
   }
   for(var j = 0; j < graph.nodes.length; j++){
-    //console.log(graph.nodes[j].id)
-    console.log(graph.nodes[j].size)
+    //nodes[j].size = nodes[j].count();
+    console.log(nodes[j].count())
     //console.log(graph.nodes[j].size)
   }
   //button logic help from karthi here
-  var toggle = true
-  d3.select("button")
-    //.enter().select("button")
-    .on("click", function(d){
-        if(toggle = true){
+  var button = d3.select("button");
+  button.on("click", function(){
+        if(button.attr("value") == "ON"){
           simulation.stop();
-          toggle = false
-          console.log(d.attr("value"))
+          button.attr("value", "OFF")
+          //console.log(d3.select("button").attr("value"))
         }
         else{
           simulation.restart();
-          toggle = true
-          console.log("other")
+          button.attr("value", "ON")
+          //console.log(button.attr("value"))
         }
     })
 
-  console.log(graph.nodes)
-  console.log(d3.max(graph.links , function(d) {return d.value} ))
+  //console.log(graph.nodes)
+  //console.log(d3.max(graph.links , function(d) {return d.value} ))
   var nodeScale = d3.scaleOrdinal()
                 .domain([1,d3.max(graph.nodes , function(d) {return d.size} )])
                 .range([5,d3.max(graph.nodes , function(d) {return d.size} ) ])
@@ -85,7 +85,8 @@ d3.json("miserables.json").then(function(graph) {
     .selectAll("circle")
     .data(graph.nodes)
     .enter().append("circle")
-      .attr("r", function(d) {return nodeScale(d.size)})
+      .attr("r", function(d) {return count(links[d].source)} )
+      //.attr("r", function(d) {return nodeScale(d.size)})
       .attr("fill", function(d) { return color(d.group); })
       .call(d3.drag()
           .on("start", dragstarted)
@@ -112,7 +113,6 @@ d3.json("miserables.json").then(function(graph) {
       .distance(function (d){ return d.strength*3});
 
   function ticked() {
-    
     link
         .attr("x1", function(d) { return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
