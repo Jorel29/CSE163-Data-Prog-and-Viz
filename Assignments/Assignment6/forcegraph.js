@@ -19,40 +19,20 @@ var simulation = d3.forceSimulation()
     .force("link", d3.forceLink().id(function(d) { return d.id; }))
     .force("charge", d3.forceManyBody())
     .force("center", d3.forceCenter(width / 2, height / 2))
-    .force("collision", d3.forceCollide());
+    .force("collision", d3.forceCollide()); //added this myself
 
 
 d3.json("miserables.json").then(function(graph) {
   //console.log(graph)
   //console.log(graph.links.length)
-  
-  var nodes = graph.nodes
+  //set new data links attr strength
   var links = graph.links
-  for(var j = 0; j < nodes.length; j++){
-    //console.log(graph.nodes[j].id)
-    nodes[j].size = 5
-    //console.log(graph.nodes[j].size)
-  }
-  for(var i = 0, j = 0; i < links.length; i++){
+  for(var i = 0; i < links.length; i++){
     links[i].strength = 1/(links[i].value);
-    //console.log(links[i].strength)
-    //console.log( links[i].source + ", " + links[i].target + ", " + links[i].value + ", " + links[i].strength)
-    //console.log(nodes[j].id)
-    //console.log(nodes[j].id + " " + links[i].target)
-    /*if(links[i].source == nodes[j].id && j < nodes.length){
-      if(nodes[j].size < links[i].value)
-          nodes[j].size = (links[i].value)
-      //console.log(nodes[j].size)
-    }else{
-      j++
-    }*/
   }
-  /*for(var j = 0; j < graph.nodes.length; j++){
-    //nodes[j].size = nodes[j].count();
-    //console.log(nodes[j].count())
-    //console.log(graph.nodes[j].size)
-  }*/
+  
   //button logic help from karthi here
+  //further iterated on by me
   var button = d3.select("button");
   button.on("click", function(){
         if(button.attr("value") == "ON"){
@@ -69,17 +49,14 @@ d3.json("miserables.json").then(function(graph) {
 
   //console.log(graph.nodes)
   //console.log(d3.max(graph.links , function(d) {return d.value} ))
-  var nodeScale = d3.scaleOrdinal()
-                .domain([1,d3.max(graph.nodes , function(d) {return d.size} )])
-                .range([5,36])
-  
+  //creates link lines on the svg as well as store link arrays
   var link = svg.append("g")
       .attr("class", "links")
     .selectAll("line")
     .data(graph.links)
     .enter().append("line")
       .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
-
+  //creates nodes and stores node array
   var node = svg.append("g")
       .attr("class", "nodes")
     .selectAll("circle")
@@ -90,9 +67,9 @@ d3.json("miserables.json").then(function(graph) {
           //console.log(l.source+ " " + l.target + " " + d.id);
           return l.source == d.id || l.target == d.id;
         }).size();
-        console.log("r:"+d.size);
+        //console.log("r:"+d.size);
         var minRadius = 5;
-        return minRadius + (d.size*2)
+        return minRadius + (d.size)
       } )
       .attr("fill", function(d) { return color(d.group); })
       .call(d3.drag()
@@ -109,17 +86,17 @@ d3.json("miserables.json").then(function(graph) {
   
   simulation.force("collision")
       .radius(function (node){
-        console.log("c:" + node.size);
-        return node.size + 5}).iterations(3)
-      .strength(1.15)
+        //console.log("c:" + node.size);
+        return node.size + 5}).iterations(5) //iterations is collision resolutions
+      .strength(2)//collision force strength
 
   simulation.force("charge")
-      .strength(-3*d3.max(graph.links ,function(d) {return d.value}))
+      .strength(function(link){return -2*link.value})//repulsion force per node based on value
 
   simulation.force("link")
       .links(graph.links)
-      .strength(function (d){ return d.strength})
-      .distance(function (d){ return d.strength*3});
+      .strength(function (d){ return d.strength/2})//modify to get desired attraction
+      .distance(function (d){ return 1/d.value}); //get closest by having biggest value
 
   function ticked() {
     link
@@ -147,6 +124,6 @@ function dragged(event) {
 
 function dragended(event) {
   if (!event.active) simulation.alphaTarget(0);
-  event.subject.fx = event.x;
-  event.subject.fy = event.y;
+  event.subject.fx = event.x;//tip from karthi here
+  event.subject.fy = event.y;// how these work is when drag ends leave at current position
 }
