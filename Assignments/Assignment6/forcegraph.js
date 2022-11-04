@@ -39,13 +39,13 @@ d3.json("miserables.json").then(function(graph) {
     //console.log( links[i].source + ", " + links[i].target + ", " + links[i].value + ", " + links[i].strength)
     //console.log(nodes[j].id)
     //console.log(nodes[j].id + " " + links[i].target)
-    if(links[i].source == nodes[j].id && j < nodes.length){
+    /*if(links[i].source == nodes[j].id && j < nodes.length){
       if(nodes[j].size < links[i].value)
           nodes[j].size = (links[i].value)
       //console.log(nodes[j].size)
     }else{
       j++
-    }
+    }*/
   }
   /*for(var j = 0; j < graph.nodes.length; j++){
     //nodes[j].size = nodes[j].count();
@@ -71,7 +71,7 @@ d3.json("miserables.json").then(function(graph) {
   //console.log(d3.max(graph.links , function(d) {return d.value} ))
   var nodeScale = d3.scaleOrdinal()
                 .domain([1,d3.max(graph.nodes , function(d) {return d.size} )])
-                .range([5,20])
+                .range([5,36])
   
   var link = svg.append("g")
       .attr("class", "links")
@@ -85,7 +85,15 @@ d3.json("miserables.json").then(function(graph) {
     .selectAll("circle")
     .data(graph.nodes)
     .enter().append("circle")
-      .attr("r", function(d) {return nodeScale(d.size)} )
+      .attr("r", function(d) { //this code is from stack overflow
+        d.size = link.filter(function(l){
+          //console.log(l.source+ " " + l.target + " " + d.id);
+          return l.source == d.id || l.target == d.id;
+        }).size();
+        console.log("r:"+d.size);
+        var minRadius = 5;
+        return minRadius + (d.size*2)
+      } )
       .attr("fill", function(d) { return color(d.group); })
       .call(d3.drag()
           .on("start", dragstarted)
@@ -100,7 +108,9 @@ d3.json("miserables.json").then(function(graph) {
       .on("tick", ticked);
   
   simulation.force("collision")
-      .radius(20)
+      .radius(function (node){
+        console.log("c:" + node.size);
+        return node.size + 5}).iterations(3)
       .strength(1.15)
 
   simulation.force("charge")
