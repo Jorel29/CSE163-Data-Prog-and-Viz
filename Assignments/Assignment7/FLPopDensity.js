@@ -12,7 +12,12 @@ var svg = d3.select("body")
 .attr("width", width + margin.left + margin.right)
 .attr("height", height + margin.top + margin.bottom)
 
-var path = d3.geoPath();
+var projection = d3.geoAlbersUsa()
+    .scale(1280)
+    .translate([width / 2, height / 2]);
+
+var path = d3.geoPath()
+    .projection(projection);
 
 var color = d3.scaleThreshold()
     .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
@@ -56,6 +61,7 @@ g.call(d3.axisBottom(x)
 
 d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
     d3.json("us-10m.json").then(function(topology) {
+        var topoFL = topology.objects
     //Appending density to topology data (IDV for Web)
     for (var i = 0; i < countiesDensity.length; i++) {
 				
@@ -82,9 +88,10 @@ d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
         }		
     }
 
-    console.log(topology)
+    console.log(topology.objects.counties)
 
     svg.append("g")
+        .attr("class", "counties")
         .selectAll("path")
         .data(topojson.feature(topology, topology.objects.counties).features)
         .enter().append("path")
@@ -94,7 +101,7 @@ d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
     svg.append("path")
         .datum(topojson.feature(topology, topology.objects.counties))
         .attr("fill", "none")
-        .attr("stroke", "#000")
+        .attr("stroke", "#fff")
         .attr("stroke-opacity", 0.3)
         .attr("d", path);
     });
