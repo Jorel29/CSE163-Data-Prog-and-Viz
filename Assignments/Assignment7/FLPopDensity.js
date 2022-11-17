@@ -66,7 +66,7 @@ d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
         var countiesDensityValue = +countiesDensity[i].density;
 
         //Find the corresponding state inside the GeoJSON
-        for (var j = 0; j < json.features.length; j++) {
+        for (var j = 0; j < topology.objects.length; j++) {
         
             var topoState = topology.features[j].id;
 
@@ -82,9 +82,11 @@ d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
         }		
     }
 
+    console.log(topology)
+
     svg.append("g")
         .selectAll("path")
-        .data(topojson.feature(topology, topology.objects.tracts).features)
+        .data(topojson.feature(topology, topology.objects.counties).features)
         .enter().append("path")
         .attr("fill", function(d) { return color(d.properties.density); })
         .attr("d", path);
