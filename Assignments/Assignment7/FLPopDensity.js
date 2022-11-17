@@ -54,20 +54,22 @@ g.call(d3.axisBottom(x)
   .select(".domain")
     .remove();
 
-d3.json("ca-topo.json").then(function(error, topology) {
-  
+d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
+    d3.json("us-10m.json").then(function(topology) {
+    
 
-  svg.append("g")
-    .selectAll("path")
-    .data(topojson.feature(topology, topology.objects.tracts).features)
-    .enter().append("path")
-      .attr("fill", function(d) { return color(d.properties.density); })
-      .attr("d", path);
+    svg.append("g")
+        .selectAll("path")
+        .data(topojson.feature(topology, topology.objects.tracts).features)
+        .enter().append("path")
+        .attr("fill", function(d) { return color(d.properties.density); })
+        .attr("d", path);
 
-  svg.append("path")
-      .datum(topojson.feature(topology, topology.objects.counties))
-      .attr("fill", "none")
-      .attr("stroke", "#000")
-      .attr("stroke-opacity", 0.3)
-      .attr("d", path);
+    svg.append("path")
+        .datum(topojson.feature(topology, topology.objects.counties))
+        .attr("fill", "none")
+        .attr("stroke", "#000")
+        .attr("stroke-opacity", 0.3)
+        .attr("d", path);
+    });
 });
