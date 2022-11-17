@@ -1,4 +1,4 @@
-"GEO.id","GEO.id2","GEO.display-label","GCT_STUB.target-geo-id","GCT_STUB.target-geo-id2","GCT_STUB.display-label","Density per square mile of land area"
+"GEO.id","GEO.id2","GEO.display-label","id","GCT_STUB.target-geo-id2","GCT_STUB.display-label","density"
 "0400000US12",12,"Florida","0500000US12001",12001,"Alachua County",282.7
 "0400000US12",12,"Florida","0500000US12003",12003,"Baker County",46.3
 "0400000US12",12,"Florida","0500000US12005",12005,"Bay County",222.6

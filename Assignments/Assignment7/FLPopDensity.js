@@ -56,7 +56,31 @@ g.call(d3.axisBottom(x)
 
 d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
     d3.json("us-10m.json").then(function(topology) {
-    
+    //Appending density to topology data (IDV for Web)
+    for (var i = 0; i < countiesDensity.length; i++) {
+				
+        //Grab state name
+        var countiesDensityID = countiesDensity[i].id;
+        
+        //Grab data value, and convert from string to float
+        var countiesDensityValue = +countiesDensity[i].density;
+
+        //Find the corresponding state inside the GeoJSON
+        for (var j = 0; j < json.features.length; j++) {
+        
+            var topoState = topology.features[j].id;
+
+            if (countiesDensityID == topoState) {
+        
+                //Copy the data value into the JSON
+                topology.features[j].properties.density = countiesDensityValue;
+                
+                //Stop looking through the JSON
+                break;
+                
+            }
+        }		
+    }
 
     svg.append("g")
         .selectAll("path")
