@@ -13,8 +13,8 @@ var svg = d3.select("body")
 .attr("height", height + margin.top + margin.bottom)
 
 var projection = d3.geoAlbersUsa()
-    .scale(1280)
-    .translate([width / 2, height / 2]);
+    .scale(5000)
+    .translate([width /2 -900, height / 2 -800]);
 
 var path = d3.geoPath()
     .projection(projection);
@@ -22,6 +22,33 @@ var path = d3.geoPath()
 var color = d3.scaleThreshold()
     .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
     .range(d3.schemeOrRd[9]);
+
+var colorButton = svg.append("g")
+            .attr("class", "button")
+            .attr("value", "OFF")
+            .attr("transform", "translate(0,80)")
+            
+colorButton
+    .append("rect")
+    .attr("height","20")
+    .attr("x", 850)
+    .attr("width", "65")
+    .attr("rx","5")
+    .attr("fill", "gray")
+    .on("mouseover", function(event){})
+    .on("mouseout", function(event){})
+    .on("click", function(){
+        if(colorButton.attr("value") == "ON"){
+          
+          colorButton.attr("value", "OFF")
+          //console.log(d3.select("button").attr("value"))
+        }
+        else{
+          
+          colorButton.attr("value", "ON")
+          //console.log(button.attr("value"))
+        }
+    });
 
 var x = d3.scaleSqrt()
     .domain([0, 4500])
@@ -61,7 +88,16 @@ g.call(d3.axisBottom(x)
 
 d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
     d3.json("us-10m.json").then(function(topology) {
-        var topoFL = topology.objects
+        //console.log(topology.objects)
+        //console.log("LineBreak")
+        //console.log(topology.objects.counties)
+        //console.log(topology.objects.counties.geometries[0].id)
+        var topoFLCounties = topology.objects.counties.geometries.filter(function(c){
+            return c.id > 12000 && c.id<13000 ;
+        })
+        topology.objects.counties.geometries = topoFLCounties
+        //console.log(topoFLCounties)
+        console.log(topology.objects.counties)
     //Appending density to topology data (IDV for Web)
     for (var i = 0; i < countiesDensity.length; i++) {
 				
@@ -74,8 +110,8 @@ d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
         //Find the corresponding state inside the GeoJSON
         for (var j = 0; j < topology.objects.length; j++) {
         
-            var topoState = topology.features[j].id;
-
+            var topoState = topology.objects[j].id;
+            console.log(topoState)
             if (countiesDensityID == topoState) {
         
                 //Copy the data value into the JSON
@@ -88,10 +124,9 @@ d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
         }		
     }
 
-    console.log(topology.objects.counties)
 
     svg.append("g")
-        .attr("class", "counties")
+        .attr("class", "density")
         .selectAll("path")
         .data(topojson.feature(topology, topology.objects.counties).features)
         .enter().append("path")
@@ -99,9 +134,10 @@ d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
         .attr("d", path);
 
     svg.append("path")
+        .attr("class", "counties")
         .datum(topojson.feature(topology, topology.objects.counties))
-        .attr("fill", "none")
-        .attr("stroke", "#fff")
+        .attr("fill", "gray")
+        .attr("stroke", "#000")
         .attr("stroke-opacity", 0.3)
         .attr("d", path);
     });
