@@ -34,9 +34,10 @@ colorButton
     .attr("x", 850)
     .attr("width", "65")
     .attr("rx","5")
-    .attr("fill", "gray")
-    .on("mouseover", function(event){})
-    .on("mouseout", function(event){})
+    .attr("fill", "lightgray")
+    .attr("stroke", "black")
+    .on("mouseover", function(){d3.select(this).style("opacity", 0.8)})
+    .on("mouseout", function(){d3.select(this).style("opacity", 1)})
     .on("click", function(){
         if(colorButton.attr("value") == "ON"){
           
@@ -50,6 +51,14 @@ colorButton
         }
     });
 
+colorButton
+        .append("text")
+        .attr("x", 865)
+        .attr("y", "1.1em")
+        .attr("class", "label")
+        .attr("fill", "black")
+        .text("Color")
+        .attr("pointer-events", "none")
 var x = d3.scaleSqrt()
     .domain([0, 4500])
     .rangeRound([440, 950]);
