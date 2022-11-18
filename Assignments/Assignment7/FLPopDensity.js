@@ -40,12 +40,12 @@ colorButton
     .on("mouseout", function(){d3.select(this).style("opacity", 1)})
     .on("click", function(){
         if(colorButton.attr("value") == "ON"){
-          
+          color.range(d3.schemePuBu[9])
           colorButton.attr("value", "OFF")
           //console.log(d3.select("button").attr("value"))
         }
         else{
-          
+          color.range(d3.schemeOrRd[9])
           colorButton.attr("value", "ON")
           //console.log(button.attr("value"))
         }
@@ -59,6 +59,7 @@ colorButton
         .attr("fill", "black")
         .text("Color")
         .attr("pointer-events", "none")
+
 var x = d3.scaleSqrt()
     .domain([0, 4500])
     .rangeRound([440, 950]);
@@ -106,28 +107,25 @@ d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
         })
         topology.objects.counties.geometries = topoFLCounties
         //console.log(topoFLCounties)
-        console.log(topology.objects.counties)
+        //console.log(topology.objects.counties)
     //Appending density to topology data (IDV for Web)
     for (var i = 0; i < countiesDensity.length; i++) {
 				
         //Grab state name
-        var countiesDensityID = countiesDensity[i].id;
+        var countiesDensityID = countiesDensity[i].id2;
         
         //Grab data value, and convert from string to float
         var countiesDensityValue = +countiesDensity[i].density;
-
+        //console.log(topoFLCounties.length)
         //Find the corresponding state inside the GeoJSON
-        for (var j = 0; j < topology.objects.length; j++) {
+        for (var j = 0; j < topoFLCounties.length; j++) {
         
-            var topoState = topology.objects[j].id;
-            console.log(topoState)
+            var topoState = topoFLCounties[j].id;
+            console.log(topoState +" "+ countiesDensityID)
             if (countiesDensityID == topoState) {
-        
-                //Copy the data value into the JSON
-                topology.features[j].properties.density = countiesDensityValue;
                 
-                //Stop looking through the JSON
-                break;
+                //Copy the data value into the JSON
+                topology.objects.counties.geometries[j].density = countiesDensityValue;
                 
             }
         }		
