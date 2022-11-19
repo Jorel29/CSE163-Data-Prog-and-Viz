@@ -68,7 +68,14 @@ colorButton
     .attr("stroke", "black")
     .on("mouseover", function(){d3.select(this).style("opacity", 0.8)})
     .on("mouseout", function(){d3.select(this).style("opacity", 1)})
-    .on("click", setScheme);
+    .on("click", function(){
+        if (colorButton.attr("value")=="ON"){
+            colorButton.attr("value", "OFF")
+            console.log(colorButton.attr("value"))
+        }else{
+            colorButton.attr("value", "ON")
+            console.log(colorButton.attr("value"))
+        }});
 
 colorButton
         .append("text")
@@ -79,20 +86,14 @@ colorButton
         .text("Color")
         .attr("pointer-events", "none")
 
-var color = d3.scaleThreshold()
-    .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
-    .range(d3.schemeOrRd[9]);
-
-
-//button logic
-var setScheme = function(){
-    if (colorButton.attr("value")=="ON"){
-        
-        colorButton.attr("value", "OFF")
-    }else{
-        colorButton.attr("value", "ON")
-        console.log(color.range())
-    }
+if(colorButton.attr("value")=="OFF"){
+    var color = d3.scaleThreshold()
+        .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
+        .range(d3.schemeOrRd[9]);
+}else{
+    var color = d3.scaleThreshold()
+        .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
+        .range(d3.schemePuBu[9]);
 }
 //=================================================
 //color button end
@@ -169,7 +170,7 @@ d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
         }		
     }
 
-    console.log(topology.objects.counties.geometries[0])
+    //console.log(topology.objects.counties.geometries[0])
 
     svg.append("g")
         .attr("class", "density")
