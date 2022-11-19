@@ -50,14 +50,14 @@ d3.select(this)
 //=================================================
 //tooltip end
 //=================================================   
-
+//=================================================
+//color button start
+//================================================= 
 var colorButton = svg.append("g")
             .attr("class", "button")
             .attr("value", "OFF")
             .attr("transform", "translate(0,80)")
-//=================================================
-//color button start
-//=================================================            
+           
 colorButton
     .append("rect")
     .attr("height","20")
@@ -78,13 +78,13 @@ colorButton
         }});
 
 colorButton
-        .append("text")
-        .attr("x", 865)
-        .attr("y", "1.1em")
-        .attr("class", "label")
-        .attr("fill", "black")
-        .text("Color")
-        .attr("pointer-events", "none")
+    .append("text")
+    .attr("x", 865)
+    .attr("y", "1.1em")
+    .attr("class", "label")
+    .attr("fill", "black")
+    .text("Color")
+    .attr("pointer-events", "none")
 
 if(colorButton.attr("value")=="OFF"){
     var color = d3.scaleThreshold()
@@ -137,7 +137,6 @@ g.call(d3.axisBottom(x)
 d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
     d3.json("us-10m.json").then(function(topology) {
         //console.log(topology.objects)
-        //console.log("LineBreak")
         //console.log(topology.objects.counties)
         //console.log(topology.objects.counties.geometries[0].id)
         var topoFLCounties = topology.objects.counties.geometries.filter(function(c){
