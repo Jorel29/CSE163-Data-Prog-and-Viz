@@ -2,5 +2,25 @@ body {
     font: 13px sans-serif;
   }
 .counties{
-    fill: gray
+    fill: none;
+}
+
+.item{
+    display: flex;
+    width: auto;
+    height: fit-content;
+}
+
+
+.tooltip{
+    stroke: #000;
+    background-color: white;
+    position: absolute;
+    width: auto;
+    height: 25px;
+    opacity: 0;
+    border: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    padding: 3px;
 }

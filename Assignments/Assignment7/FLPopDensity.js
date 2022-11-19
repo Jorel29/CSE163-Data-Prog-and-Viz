@@ -18,16 +18,46 @@ var projection = d3.geoAlbersUsa()
 
 var path = d3.geoPath()
     .projection(projection);
+//=================================================
+//tooltip start
+//=================================================   
+var tooltip = d3.select("body")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
 
-var color = d3.scaleThreshold()
-    .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
-    .range(d3.schemeOrRd[9]);
+var mouseover = function(event, d) {
+    tooltip
+        .style("opacity", 0.8)
+        .style("left", (d3.pointer(event)[0]) )
+        .style("bottom", (d3.pointer(event)[1]) )
+    d3.select(this)
+        .style("opacity", 0.8)
+    //console.log(d3.pointer(event))
+    //console.log(event.pageX)
+    //console.log(d3.pointer(event)[0])
+    //console.log(d3.pointer(event)[1])
+    //console.log(tooltip.style.top);
+    }
+
+var mouseout = function() {
+tooltip
+    .style("opacity", 0)
+d3.select(this)
+    .style("opacity", 1)
+}
+    
+//=================================================
+//tooltip end
+//=================================================   
 
 var colorButton = svg.append("g")
             .attr("class", "button")
             .attr("value", "OFF")
             .attr("transform", "translate(0,80)")
-            
+//=================================================
+//color button start
+//=================================================            
 colorButton
     .append("rect")
     .attr("height","20")
@@ -38,18 +68,7 @@ colorButton
     .attr("stroke", "black")
     .on("mouseover", function(){d3.select(this).style("opacity", 0.8)})
     .on("mouseout", function(){d3.select(this).style("opacity", 1)})
-    .on("click", function(){
-        if(colorButton.attr("value") == "ON"){
-          color.range(d3.schemePuBu[9])
-          colorButton.attr("value", "OFF")
-          //console.log(d3.select("button").attr("value"))
-        }
-        else{
-          color.range(d3.schemeOrRd[9])
-          colorButton.attr("value", "ON")
-          //console.log(button.attr("value"))
-        }
-    });
+    .on("click", setScheme);
 
 colorButton
         .append("text")
@@ -60,6 +79,24 @@ colorButton
         .text("Color")
         .attr("pointer-events", "none")
 
+var color = d3.scaleThreshold()
+    .domain([1, 10, 50, 200, 500, 1000, 2000, 4000])
+    .range(d3.schemeOrRd[9]);
+
+
+//button logic
+var setScheme = function(){
+    if (colorButton.attr("value")=="ON"){
+        
+        colorButton.attr("value", "OFF")
+    }else{
+        colorButton.attr("value", "ON")
+        console.log(color.range())
+    }
+}
+//=================================================
+//color button end
+//=================================================
 var x = d3.scaleSqrt()
     .domain([0, 4500])
     .rangeRound([440, 950]);
@@ -113,39 +150,58 @@ d3.csv("FLCountiesDensity.csv").then(function(countiesDensity){
 				
         //Grab state name
         var countiesDensityID = countiesDensity[i].id2;
-        
+        var name = countiesDensity[i].name;
         //Grab data value, and convert from string to float
-        var countiesDensityValue = +countiesDensity[i].density;
+        var density = +countiesDensity[i].density;
         //console.log(topoFLCounties.length)
         //Find the corresponding state inside the GeoJSON
         for (var j = 0; j < topoFLCounties.length; j++) {
         
             var topoState = topoFLCounties[j].id;
-            console.log(topoState +" "+ countiesDensityID)
+            //console.log(topoState +" "+ countiesDensityID)
             if (countiesDensityID == topoState) {
                 
                 //Copy the data value into the JSON
-                topology.objects.counties.geometries[j].density = countiesDensityValue;
-                
+                topology.objects.counties.geometries[j].properties = {density, name}
+        
+                break;
             }
         }		
     }
 
+    console.log(topology.objects.counties.geometries[0])
 
     svg.append("g")
         .attr("class", "density")
         .selectAll("path")
         .data(topojson.feature(topology, topology.objects.counties).features)
         .enter().append("path")
-        .attr("fill", function(d) { return color(d.properties.density); })
-        .attr("d", path);
+        .attr("fill", function(d) {
+            return color(d.properties.density); })
+        .attr("d", path)
+        .on("mouseover", mouseover)
+        .on("mousemove", function(event, d) {
+            tooltip
+                .html(
+                    "<div class=\"item\">"+
+                        d.properties.name+":"+ d.properties.density+
+                    "</div>"
+                    )
+                .style("left", (d3.pointer(event)[0]) + "px")
+                .style("top", (d3.pointer(event)[1]) +25+"px")
+            })
+        .on("mouseout", mouseout);
 
     svg.append("path")
         .attr("class", "counties")
         .datum(topojson.feature(topology, topology.objects.counties))
         .attr("fill", "gray")
         .attr("stroke", "#000")
-        .attr("stroke-opacity", 0.3)
+        .attr("stroke-opacity", 1)
         .attr("d", path);
+    
     });
 });
+
+
+
