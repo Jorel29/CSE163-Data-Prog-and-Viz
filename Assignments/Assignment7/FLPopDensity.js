@@ -104,6 +104,49 @@ var color = d3.scaleThreshold()
 //color button end
 //=================================================
 //=================================================
+//border button start
+//=================================================
+var borderButton = svg.append("g")
+    .attr("class", "button")
+    .attr("value", "OFF")
+    .attr("transform", "translate(0,120)")
+
+borderButton
+    .append("rect")
+    .attr("height", "20")
+    .attr("x", 850)
+    .attr("width", "65")
+    .attr("rx", "5")
+    .attr("fill", "lightgray")
+    .attr("stroke", "black")
+    .on("mouseover", function () { d3.select(this).style("opacity", 0.8) })
+    .on("mouseout", function () { d3.select(this).style("opacity", 1) })
+    .on("click", function(){
+        if (borderButton.attr("value")=="OFF")
+        {
+            borderButton.attr("value", "ON")
+            borders.attr("stroke-opacity", 0)
+        }
+        else
+        {
+            borderButton.attr("value", "OFF")
+            borders.attr("stroke-opacity", 1)
+        }
+    });
+
+borderButton
+    .append("text")
+    .attr("x", 863)
+    .attr("y", "1.1em")
+    .attr("class", "label")
+    .attr("fill", "black")
+    .text("Border")
+    .attr("pointer-events", "none")
+
+//=================================================
+//border button end
+//=================================================
+//=================================================
 // Built from code from CAPop Density
 //=================================================
 var x = d3.scaleSqrt()
